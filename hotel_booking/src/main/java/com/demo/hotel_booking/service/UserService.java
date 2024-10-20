@@ -1,6 +1,7 @@
 package com.demo.hotel_booking.service;
 
 import com.demo.hotel_booking.dto.request.UserCreationRequest;
+import com.demo.hotel_booking.dto.request.UserLoginRequest;
 import com.demo.hotel_booking.entity.User;
 import com.demo.hotel_booking.mapper.UserMapper;
 import com.demo.hotel_booking.repository.UserRepository;
@@ -17,5 +18,10 @@ public class UserService {
     public User createUser(UserCreationRequest request) {
         User user = userMapper.toUser(request);
         return userRepository.save(user);
+    }
+
+    public User login(UserLoginRequest request) {
+        User user = userMapper.toUserLogin(request);
+        return userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
     }
 }
