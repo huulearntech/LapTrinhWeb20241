@@ -1,4 +1,4 @@
-package com.vhung11.hotel_booking_demo.dto.request;
+package com.demo.hotel_booking.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

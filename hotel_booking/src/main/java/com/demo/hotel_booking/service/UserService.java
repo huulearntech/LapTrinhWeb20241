@@ -1,9 +1,9 @@
-package com.vhung11.hotel_booking_demo.service;
+package com.demo.hotel_booking.service;
 
-import com.vhung11.hotel_booking_demo.dto.request.UserCreationRequest;
-import com.vhung11.hotel_booking_demo.entity.User;
-import com.vhung11.hotel_booking_demo.mapper.UserMapper;
-import com.vhung11.hotel_booking_demo.repository.UserRepository;
+import com.demo.hotel_booking.dto.request.UserCreationRequest;
+import com.demo.hotel_booking.entity.User;
+import com.demo.hotel_booking.mapper.UserMapper;
+import com.demo.hotel_booking.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

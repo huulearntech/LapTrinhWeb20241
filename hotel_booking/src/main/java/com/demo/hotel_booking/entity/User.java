@@ -1,4 +1,4 @@
-package com.vhung11.hotel_booking_demo.entity;
+package com.demo.hotel_booking.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

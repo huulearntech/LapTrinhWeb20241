@@ -1,6 +1,6 @@
-package com.vhung11.hotel_booking_demo.repository;
+package com.demo.hotel_booking.repository;
 
-import com.vhung11.hotel_booking_demo.entity.User;
+import com.demo.hotel_booking.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

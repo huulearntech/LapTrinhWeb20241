@@ -1,17 +1,19 @@
-package com.vhung11.hotel_booking_demo.controller;
+package com.demo.hotel_booking.controller;
 
-import com.vhung11.hotel_booking_demo.dto.request.UserCreationRequest;
-import com.vhung11.hotel_booking_demo.entity.User;
-import com.vhung11.hotel_booking_demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.demo.hotel_booking.dto.request.UserCreationRequest;
+import com.demo.hotel_booking.entity.User;
+import com.demo.hotel_booking.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/users")
     public User createUser(@RequestBody UserCreationRequest request) {
