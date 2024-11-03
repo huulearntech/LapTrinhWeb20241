@@ -1,5 +1,6 @@
 package com.demo.hotel_booking.entity;
 
+import com.demo.hotel_booking.enums.UserRole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,4 +23,5 @@ public class User {
     String email;
     String phone;
     String password;
+    UserRole userRole;
 }

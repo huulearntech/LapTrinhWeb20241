@@ -3,11 +3,11 @@ package com.demo.hotel_booking.controller;
 import com.demo.hotel_booking.dto.request.UserCreationRequest;
 import com.demo.hotel_booking.entity.User;
 import com.demo.hotel_booking.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
+@RequestMapping("/")
 public class UserController {
     private final UserService userService;
 
@@ -15,8 +15,22 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/users")
-    public User createUser(@RequestBody UserCreationRequest request) {
-        return userService.createUser(request);
+    @GetMapping
+    public String showHomePage() {
+        return "index";
     }
+
+    @GetMapping("login")
+    public String showLogin() {
+        return "login";
+    }
+
+    @GetMapping("register")
+    public String showRegisterForm() {
+        return "register";
+    }
+
+
+
+
 }
