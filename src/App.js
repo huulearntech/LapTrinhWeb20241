@@ -8,13 +8,19 @@ import SignUp from './pages/SignUp'
 const App = () => {
   const [isAuthenticated, setAuthenticated] = useState(false)
 
-  
+
   const handleSignIn = () => {
     setAuthenticated(true)
   }
 
   return (
-    <SignUp />
+    <Router>
+        <SignIn />
+        <SignUp />
+      <Routes>
+
+      </Routes>
+    </Router>
   );
 };
 

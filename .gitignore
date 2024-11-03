@@ -8,6 +8,7 @@
 # testing
 /coverage
 /src/App.test.js
+/src/App.js
 /src/reportWebVitals.js
 /src/setupTests.js
 
