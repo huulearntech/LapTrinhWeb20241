@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -19,7 +20,7 @@ public class JwtService {
 
 
     private long jwtExpiration = 8640000;
-    private String secretKey = "1BE1E937CE9775FCEEB12FB444D23";
+    private String secretKey = "82B399A6589E2B64F38722B5F8B532163H2364F12354";
 
     public String extractUsername(String token) {
         return extractClaims(token, Claims::getSubject);
@@ -43,12 +44,15 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    private String generateToken(HashMap<String, Objects> claims, UserDetails userDetails) {
+    public String generateToken(
+            Map<String, Object> claims,
+            UserDetails userDetails
+    ) {
         return buildToken(claims, userDetails, jwtExpiration);
     }
 
     private String buildToken(
-            HashMap<String, Objects> extractClaims,
+            Map<String, Object> extractClaims,
             UserDetails userDetails,
             long jwtExpiration
     ) {
