@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { FaArrowUp } from 'react-icons/fa';
 
-const ScrollToTopButton = () => {
+const ScrollToTopButton = ({ threshold = 200, size = 48 }) => {
   const [visible, setVisible] = useState(false);
 
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY;
-    setVisible(currentScrollY > 200);
-  };
+  const handleScroll = useCallback(() => {
+    setVisible(window.scrollY > threshold);
+  }, [threshold]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -14,19 +14,22 @@ const ScrollToTopButton = () => {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [handleScroll]);
 
   return (
     <button
       onClick={scrollToTop}
-      className={`fixed bottom-10 right-10 bg-blue-500 border-none rounded-full w-12 h-12 flex items-center justify-center shadow-md cursor-pointer transition-opacity duration-300 ${visible ? 'flex' : 'hidden'} hover:bg-blue-600`}
-      style={{ display: visible ? 'flex' : 'none' }}
-    >
-      <img src="#" alt="Scroll to Top" className="w-7 h-7" />
+      aria-label="Scroll to top"
+      className={`fixed z-10 bottom-10 right-10 flex items-center justify-center rounded-full shadow-md cursor-pointer transition-opacity duration-300 
+        ${visible ? 'opacity-100' : 'opacity-0 pointer-events-none'} 
+        bg-blue-500 hover:bg-blue-600`}
+        style={{ width: size, height: size }}
+        >
+      <FaArrowUp className="text-white"/>
     </button>
   );
 };

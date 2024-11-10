@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { BiHide, BiShow } from 'react-icons/bi';
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -9,6 +11,7 @@ const SignIn = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Xử lý đăng nhập ở đây
+    navigate('/')
   };
 
   return (
@@ -25,23 +28,27 @@ const SignIn = () => {
             className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
-          <input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-            required
-          />
-          <div className="flex items-center mb-6">
+
+          <div className="relative w-full mb-4">
             <input
-              type="checkbox"
-              className="m-1"
-              checked={showPassword}
-              onChange={() => setShowPassword(!showPassword)}
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-3 pr-12 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
             />
-            <label className="cursor-pointer">Show password</label>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setShowPassword(!showPassword);
+              }}
+              className="absolute top-1/2 right-3 transform -translate-y-1/2 flex items-center justify-center w-8 h-8 bg-gray-200 text-gray-600 rounded-full hover:bg-gray-300 focus:outline-none transition duration-150 ease-in-out"
+            >
+              {showPassword ? <BiShow className="text-lg" /> : <BiHide className="text-lg" />}
+            </button>
           </div>
+
           <button
             className="w-full p-3 mb-4 text-white font-bold bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
             type="submit"
@@ -57,6 +64,4 @@ const SignIn = () => {
     </div>
   );
 };
-
 export default SignIn;
-

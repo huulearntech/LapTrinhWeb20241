@@ -1,27 +1,24 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
-import SignIn from './pages/SignIn'
-import SignUp from './pages/SignUp'
-
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import HomePage from './pages/HomePage'
+import ProfilePage from './pages/ProfilePage'
 
 const App = () => {
-  const [isAuthenticated, setAuthenticated] = useState(false)
-
-
-  const handleSignIn = () => {
-    setAuthenticated(true)
-  }
-
   return (
-    <Router>
-        <SignIn />
-        <SignUp />
-      <Routes>
-
-      </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          {/* Add other routes as needed */}
+        </Routes>
+      </Router>
+    // <HomePage />
   );
 };
 
 export default App;
+

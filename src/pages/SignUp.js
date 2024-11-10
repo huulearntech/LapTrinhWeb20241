@@ -36,11 +36,10 @@ const SignUp = () => {
           <button className="w-full p-3 mb-4 text-white font-bold bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
             Sign Up
           </button>
-          <Link to="/" className="text-blue-500 hover:underline">Already have an account? </Link>
+          <Link to="/signin" className="text-blue-500 hover:underline">Already have an account? </Link>
         </div>
       </div>
         );
 };
 
 export default SignUp;
-

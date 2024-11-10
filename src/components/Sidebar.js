@@ -1,61 +1,45 @@
-import React, { useState } from 'react';
-import { ReactComponent as RightArrow } from './right-arrow.svg';
-import { ReactComponent as LeftArrow } from './left-arrow.svg';
+import React from 'react';
+import { RiHome2Line, RiFileListLine, RiSearchLine, RiSettings4Line } from 'react-icons/ri';
 
-const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
-
-  const toggleSidebar = () => {
-    setIsCollapsed(prev => !prev);
-  };
-
+const Sidebar = ({ isCollapsed }) => {
   const menuItems = [
-    { label: 'Item 1', href: '#' },
-    { label: 'Item 2', href: '#' },
-    { label: 'Item 3', href: '#' },
-    { label: 'Item 4', href: '#' },
+    { label: 'Home', icon: <RiHome2Line className="w-6 h-6" /> },
+    { label: 'Files', icon: <RiFileListLine className="w-6 h-6" /> },
+    { label: 'Search', icon: <RiSearchLine className="w-6 h-6" /> },
+    { label: 'Settings', icon: <RiSettings4Line className="w-6 h-6" /> },
   ];
 
   return (
-    <div className="flex">
+    <>
+      {!isCollapsed &&
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 z-10"> </div>
+      }
       <div
-        className={`bg-gray-800 text-white h-screen transition-all duration-300 ${
-          isCollapsed ? 'w-20' : 'w-64'
-        }`}
+        className={`pt-16 bg-white text-black h-screen transition-all duration-300 ${isCollapsed ? 'w-0' : 'w-64'
+          } fixed top-0 left-0 bottom-0 z-40 overflow-hidden transition-all duration-300 shadow-lg rounded-r-lg`}
       >
-        <div className="flex items-center justify-between p-4">
-          <h2 className={`text-xl font-bold ${isCollapsed ? 'hidden' : 'block'}`}>Sidebar</h2>
-          <button
-            onClick={toggleSidebar}
-            className={`p-2 bg-blue-500 text-white rounded-full focus:outline-none transition-transform duration-300 ${
-              isCollapsed ? 'transform rotate-90' : 'transform rotate-0'
-            }`}
-            aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          >
-            {isCollapsed ? <RightArrow className="w-6 h-6" /> : <LeftArrow className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {!isCollapsed && (
-          <ul className="mt-4 px-4">
-            {menuItems.map((item, index) => (
-              <li key={index} className="mb-2">
-                <a href={item.href} className="hover:underline">
+        <ul className={`mt-4`}>
+          {menuItems.map((item, index) => (
+            // placeholder for something wraps the <li>
+            <li
+              key={index}
+              className={`flex w-full px-4 items-center space-x-4 py-4 transition-all duration-300 ease-in-out cursor-pointer hover:bg-gray-200`}
+            >
+              <div className="relative flex items-center">
+                {item.icon}
+                <span
+                  className={`mt-1 px-2 text-lg font-medium whitespace-nowrap transform transition-all duration-300`}
+                >
                   {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        )}
+                </span>
+              </div>
+            </li>
+            // wrapper ends here
+          ))}
+        </ul>
       </div>
-
-      <div className="flex-grow p-4">
-        <h1 className="text-2xl">Main Content</h1>
-        <p>This is where your main content goes.</p>
-      </div>
-    </div>
+    </>
   );
 };
 
 export default Sidebar;
-
