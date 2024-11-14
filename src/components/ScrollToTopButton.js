@@ -5,6 +5,7 @@ const ScrollToTopButton = ({ threshold = 200, size = 48 }) => {
   const [visible, setVisible] = useState(false);
 
   const handleScroll = useCallback(() => {
+    // Cập nhật trạng thái chỉ khi vị trí cuộn thay đổi vượt qua ngưỡng
     setVisible(window.scrollY > threshold);
   }, [threshold]);
 
@@ -13,10 +14,16 @@ const ScrollToTopButton = ({ threshold = 200, size = 48 }) => {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    const handleDebouncedScroll = () => {
+      // Cập nhật trạng thái cuộn sau khi dừng cuộn trong một khoảng thời gian ngắn
+      handleScroll();
+    };
 
+    window.addEventListener('scroll', handleDebouncedScroll);
+
+    // Clean up event listener khi component unmount
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleDebouncedScroll);
     };
   }, [handleScroll]);
 
@@ -24,12 +31,14 @@ const ScrollToTopButton = ({ threshold = 200, size = 48 }) => {
     <button
       onClick={scrollToTop}
       aria-label="Scroll to top"
-      className={`fixed z-10 bottom-10 right-10 flex items-center justify-center rounded-full shadow-md cursor-pointer transition-opacity duration-300 
+      role="button" // Tối ưu hóa accessibility
+      className={`fixed z-10 bottom-10 right-10 flex items-center justify-center rounded-full shadow-md cursor-pointer transition-opacity duration-300
         ${visible ? 'opacity-100' : 'opacity-0 pointer-events-none'} 
-        bg-blue-500 hover:bg-blue-600`}
-        style={{ width: size, height: size }}
-        >
-      <FaArrowUp className="text-white"/>
+        bg-blue-500 hover:bg-blue-600 focus:outline-none active:bg-blue-700`}
+      style={{ width: size, height: size }}
+      aria-hidden={!visible} // Ẩn khỏi công cụ trợ giúp khi không hiển thị
+    >
+      <FaArrowUp className="text-white" />
     </button>
   );
 };

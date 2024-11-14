@@ -1,9 +1,14 @@
 import React from 'react';
-import { RiHome2Line, RiFileListLine, RiSearchLine, RiSettings4Line } from 'react-icons/ri';
+import {
+  RiHome2Line as HomeIcon,
+  RiFileListLine,
+  RiSearchLine,
+  RiSettings4Line
+} from 'react-icons/ri';
 
-const Sidebar = ({ isCollapsed }) => {
+const Sidebar = ({ isOpen, closeSidebar }) => {
   const menuItems = [
-    { label: 'Home', icon: <RiHome2Line className="w-6 h-6" /> },
+    { label: 'Home', icon: <HomeIcon className="w-6 h-6" /> },
     { label: 'Files', icon: <RiFileListLine className="w-6 h-6" /> },
     { label: 'Search', icon: <RiSearchLine className="w-6 h-6" /> },
     { label: 'Settings', icon: <RiSettings4Line className="w-6 h-6" /> },
@@ -11,11 +16,12 @@ const Sidebar = ({ isCollapsed }) => {
 
   return (
     <>
-      {!isCollapsed &&
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 z-10"> </div>
+      {isOpen &&
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 z-10"
+          onClick={closeSidebar}> </div>
       }
       <div
-        className={`pt-16 bg-white text-black h-screen transition-all duration-300 ${isCollapsed ? 'w-0' : 'w-64'
+        className={`pt-16 bg-white text-black h-screen transition-all duration-300 ${isOpen ? 'w-64' : 'w-0'
           } fixed top-0 left-0 bottom-0 z-40 overflow-hidden transition-all duration-300 shadow-lg rounded-r-lg`}
       >
         <ul className={`mt-4`}>

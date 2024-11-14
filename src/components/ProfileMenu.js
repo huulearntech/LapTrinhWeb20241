@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import { RiUser3Line, RiLogoutBoxRLine, RiCoupon2Line } from 'react-icons/ri';
+import { BsPersonGear as ProfileSettingIcon } from 'react-icons/bs';
+import {
+  RiLogoutBoxRLine as SignOutIcon,
+  RiCoupon2Line as CouponIcon
+} from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const SignOutModal = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-30">
-      <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm mx-auto">
+    <div className="fixed inset-0 flex z-50 items-center justify-center bg-gray-500 bg-opacity-50">
+      <div className="w-full max-w-lg bg-white p-6 mx-auto rounded-lg shadow-lg">
         <h2 className="text-lg font-bold">Confirm Sign Out</h2>
         <p className="mt-2">Do you want to sign out?</p>
         <div className="mt-4 flex justify-end">
@@ -19,7 +24,7 @@ const SignOutModal = ({ isOpen, onClose, onConfirm }) => {
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 bg-red-400 text-white rounded hover:bg-red-500"
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
           >
             Sign Out
           </button>
@@ -30,10 +35,12 @@ const SignOutModal = ({ isOpen, onClose, onConfirm }) => {
 };
 
 
-const ProfileMenu = ({ isCollapsed }) => {
+const ProfileMenu = ({ isOpen, closeProfileMenu }) => {
+  const { signOut } = useAuth();
+
   const menuItems = [
-    { label: 'Profile', icon: <RiUser3Line className="w-6 h-6" />, link: '/profile' },
-    { label: 'Coupon', icon: <RiCoupon2Line className="w-6 h-6" />, link: '/coupon' },
+    { label: 'Profile', icon: <ProfileSettingIcon className="w-6 h-6" />, link: '/profile' },
+    { label: 'Coupon', icon: <CouponIcon className="w-6 h-6" />, link: '/coupon' },
   ];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,18 +51,23 @@ const ProfileMenu = ({ isCollapsed }) => {
 
   const confirmSignOut = () => {
     // Add your sign-out logic here
+    
+    // gui tin hieu ve server
+
+    signOut();
     console.log('Signing out...');
     setIsModalOpen(false); // Close modal after confirming
+    closeProfileMenu();
   };
 
   return (
     <>
-      {!isCollapsed &&
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 z-10"> </div>
-
+      {isOpen &&
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 z-10"
+        onClick={closeProfileMenu}> </div>
       }
       <div
-        className={`pt-16 bg-white text-black h-screen transition-all duration-300 ${isCollapsed ? 'w-0' : 'w-64'
+        className={`pt-16 bg-white text-black h-screen transition-all duration-300 ${isOpen ? 'w-64' : 'w-0'
           } fixed top-0 right-0 bottom-0 z-20 overflow-hidden transition-all duration-300 shadow-lg rounded-r-lg`}
       >
         <ul className={`mt-4`}>
@@ -63,12 +75,12 @@ const ProfileMenu = ({ isCollapsed }) => {
             <Link to={item.link}>
               <li
                 key={index}
-                className={`flex w-full px-4 items-center space-x-4 py-4 transition-all duration-300 ease-in-out cursor-pointer hover:bg-gray-200`}
+                className={"flex w-full px-4 items-center space-x-4 py-4 transition-all duration-300 ease-in-out cursor-pointer hover:bg-gray-200"}
               >
                 <div className="relative flex items-center">
                   {item.icon}
                   <span
-                    className={`mt-1 px-2 text-lg font-medium whitespace-nowrap transform transition-all duration-300`}
+                    className={"mt-1 px-2 text-lg font-medium whitespace-nowrap transform transition-all duration-300"}
                   >
                     {item.label}
                   </span>
@@ -77,13 +89,13 @@ const ProfileMenu = ({ isCollapsed }) => {
             </Link>
           ))}
           <li
-            className={`flex w-full px-4 items-center space-x-4 py-4 transition-all duration-300 ease-in-out cursor-pointer hover:bg-gray-200`}
+            className={"flex w-full px-4 items-center space-x-4 py-4 transition-all duration-300 ease-in-out cursor-pointer hover:bg-gray-200"}
             onClick={handleSignOut}
           >
             <div className="relative flex items-center text-red-500">
-              <RiLogoutBoxRLine className="size-6" />
+              <SignOutIcon className="size-6" />
               <span
-                className={`mt-1 px-2 text-lg font-medium whitespace-nowrap transform transition-all duration-300`}
+                className={"mt-1 px-2 text-lg font-medium whitespace-nowrap transform transition-all duration-300"}
               >
                 Sign out
               </span>
