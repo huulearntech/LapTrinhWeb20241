@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface RoomService {
     Room createRoom(Room room);
     List<Room> getAllRooms();
+    Optional<Room> getRoomById(String roomId);
 }

@@ -23,4 +23,9 @@ public class RoomServiceImpl implements RoomService {
     public List<Room> getAllRooms() {
         return roomRepository.findAll();
     }
+
+    @Override
+    public Optional<Room> getRoomById(String roomId) {
+        return roomRepository.findById(roomId);
+    }
 }

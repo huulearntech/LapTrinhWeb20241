@@ -26,4 +26,10 @@ public class RoomController {
         List<Room> rooms = roomService.getAllRooms();
         return ResponseEntity.ok(rooms);
     }
+
+    @GetMapping("/rooms/{roomId}")
+    public ResponseEntity<Room> getRoomById(@PathVariable String roomId) {
+        Room room = roomService.getRoomById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
+        return ResponseEntity.ok(room);
+    }
 }
