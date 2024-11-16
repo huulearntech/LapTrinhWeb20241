@@ -20,4 +20,10 @@ public class RoomController {
         Room createdRoom = roomService.createRoom(room);
         return ResponseEntity.ok(createdRoom);
     }
+
+    @GetMapping("/rooms")
+    public ResponseEntity<List<Room>> getAllRooms() {
+        List<Room> rooms = roomService.getAllRooms();
+        return ResponseEntity.ok(rooms);
+    }
 }
