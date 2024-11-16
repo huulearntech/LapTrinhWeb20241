@@ -9,4 +9,5 @@ public interface RoomService {
     Room createRoom(Room room);
     List<Room> getAllRooms();
     Optional<Room> getRoomById(String roomId);
+    Room updateRoom(String roomId, Room roomDetails);
 }

@@ -32,4 +32,10 @@ public class RoomController {
         Room room = roomService.getRoomById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
         return ResponseEntity.ok(room);
     }
+
+    @PutMapping("/update/{roomId}")
+    public ResponseEntity<Room> updateRoom(@PathVariable String roomId, @RequestBody Room roomDetails) {
+        Room updatedRoom = roomService.updateRoom(roomId, roomDetails);
+        return ResponseEntity.ok(updatedRoom);
+    }
 }
