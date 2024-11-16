@@ -28,4 +28,16 @@ public class RoomServiceImpl implements RoomService {
     public Optional<Room> getRoomById(String roomId) {
         return roomRepository.findById(roomId);
     }
+
+    @Override
+    public Room updateRoom(String roomId, Room roomDetails) {
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
+        room.setHotelID(roomDetails.getHotelID());
+        room.setDescription(roomDetails.getDescription());
+        room.setType(roomDetails.getType());
+        room.setStatus(roomDetails.getStatus());
+        room.setPrice(roomDetails.getPrice());
+        room.setCapacity(roomDetails.getCapacity());
+        return roomRepository.save(room);
+    }
 }
