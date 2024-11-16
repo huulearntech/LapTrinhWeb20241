@@ -40,4 +40,10 @@ public class RoomServiceImpl implements RoomService {
         room.setCapacity(roomDetails.getCapacity());
         return roomRepository.save(room);
     }
+
+    @Override
+    public void deleteRoom(String roomId) {
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
+        roomRepository.delete(room);
+    }
 }
