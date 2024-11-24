@@ -1,4 +1,4 @@
-package com.demo.hotel_booking.auth;
+package com.demo.hotel_booking.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,11 +11,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class RegistrationRequest {
+public class AuthenticationRequest {
 
-    @NotEmpty(message = "Full name is mandatory")
-    @NotNull(message = "Full name is mandatory")
-    private String fullName;
     @Email(message = "Email is not well formatted")
     @NotEmpty(message = "Email is mandatory")
     @NotNull(message = "Email is mandatory")
@@ -26,3 +23,4 @@ public class RegistrationRequest {
     private String password;
 
 }
+

@@ -1,7 +1,7 @@
-package com.demo.hotel_booking.handler;
+package com.demo.hotel_booking.exception;
 
+import com.demo.hotel_booking.dto.response.ExceptionResponse;
 import jakarta.mail.MessagingException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -9,13 +9,13 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.demo.hotel_booking.handler.BusinessErrorCode.*;
+import static com.demo.hotel_booking.enums.BusinessErrorCode.*;
 import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

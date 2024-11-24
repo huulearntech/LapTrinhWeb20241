@@ -1,4 +1,4 @@
-package com.demo.hotel_booking.user;
+package com.demo.hotel_booking.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

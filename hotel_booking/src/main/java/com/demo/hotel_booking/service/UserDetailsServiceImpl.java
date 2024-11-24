@@ -1,6 +1,6 @@
-package com.demo.hotel_booking.security;
+package com.demo.hotel_booking.service;
 
-import com.demo.hotel_booking.user.UserRepository;
+import com.demo.hotel_booking.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

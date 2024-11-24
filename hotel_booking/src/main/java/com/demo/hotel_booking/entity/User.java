@@ -1,6 +1,5 @@
-package com.demo.hotel_booking.user;
+package com.demo.hotel_booking.entity;
 
-import com.demo.hotel_booking.role.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

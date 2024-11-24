@@ -1,5 +1,6 @@
-package com.demo.hotel_booking.email;
+package com.demo.hotel_booking.service;
 
+import com.demo.hotel_booking.enums.EmailTemplateName;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;

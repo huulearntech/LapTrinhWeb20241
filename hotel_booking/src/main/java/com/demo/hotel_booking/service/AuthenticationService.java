@@ -1,15 +1,16 @@
-package com.demo.hotel_booking.auth;
+package com.demo.hotel_booking.service;
 
-import com.demo.hotel_booking.email.EmailService;
-import com.demo.hotel_booking.email.EmailTemplateName;
-import com.demo.hotel_booking.role.RoleRepository;
+import com.demo.hotel_booking.dto.request.AuthenticationRequest;
+import com.demo.hotel_booking.dto.request.RegistrationRequest;
+import com.demo.hotel_booking.dto.response.AuthenticationResponse;
+import com.demo.hotel_booking.entity.Token;
+import com.demo.hotel_booking.entity.User;
+import com.demo.hotel_booking.enums.EmailTemplateName;
+import com.demo.hotel_booking.repository.RoleRepository;
+import com.demo.hotel_booking.repository.TokenRepository;
+import com.demo.hotel_booking.repository.UserRepository;
 import com.demo.hotel_booking.security.JwtService;
-import com.demo.hotel_booking.user.Token;
-import com.demo.hotel_booking.user.TokenRepository;
-import com.demo.hotel_booking.user.User;
-import com.demo.hotel_booking.user.UserRepository;
 import jakarta.mail.MessagingException;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +23,6 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor

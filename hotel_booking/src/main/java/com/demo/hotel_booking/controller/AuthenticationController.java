@@ -1,5 +1,9 @@
-package com.demo.hotel_booking.auth;
+package com.demo.hotel_booking.controller;
 
+import com.demo.hotel_booking.dto.request.AuthenticationRequest;
+import com.demo.hotel_booking.dto.request.RegistrationRequest;
+import com.demo.hotel_booking.dto.response.AuthenticationResponse;
+import com.demo.hotel_booking.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;

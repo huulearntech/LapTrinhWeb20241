@@ -1,10 +1,11 @@
-package com.demo.hotel_booking.handler;
+package com.demo.hotel_booking.enums;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 import static org.springframework.http.HttpStatus.*;
 
+@Getter
 public enum BusinessErrorCode {
 
     NO_CODE(0, NOT_IMPLEMENTED, "No code"),
@@ -15,11 +16,8 @@ public enum BusinessErrorCode {
     BAD_CREDENTIALS(304, FORBIDDEN, "Login and / or password is incorrect"),
     ;
 
-    @Getter
-    private int code;
-    @Getter
-    private String description;
-    @Getter
+    private final int code;
+    private final String description;
     private final HttpStatus httpStatus;
 
     BusinessErrorCode(int code, HttpStatus httpStatus, String description) {

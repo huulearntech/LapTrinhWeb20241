@@ -1,5 +1,6 @@
-package com.demo.hotel_booking.user;
+package com.demo.hotel_booking.repository;
 
+import com.demo.hotel_booking.entity.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

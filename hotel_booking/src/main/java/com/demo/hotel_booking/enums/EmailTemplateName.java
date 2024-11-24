@@ -1,4 +1,4 @@
-package com.demo.hotel_booking.email;
+package com.demo.hotel_booking.enums;
 
 import lombok.Getter;
 

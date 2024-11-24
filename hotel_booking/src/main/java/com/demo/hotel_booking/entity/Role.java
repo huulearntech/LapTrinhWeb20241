@@ -1,7 +1,10 @@
-package com.demo.hotel_booking.role;
+package com.demo.hotel_booking.entity;
 
-import com.demo.hotel_booking.user.User;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
