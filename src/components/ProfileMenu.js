@@ -4,8 +4,12 @@ import {
   RiLogoutBoxRLine as SignOutIcon,
   RiCoupon2Line as CouponIcon
 } from 'react-icons/ri';
-import { Link } from 'react-router-dom';
+import { RxCross2 as CloseProfileMenuIcon } from 'react-icons/rx';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+
+import { fake_user } from '../fake_data';
+
 
 const SignOutModal = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
@@ -37,9 +41,10 @@ const SignOutModal = ({ isOpen, onClose, onConfirm }) => {
 
 const ProfileMenu = ({ isOpen, closeProfileMenu }) => {
   const { signOut } = useAuth();
+  const navigate = useNavigate();
 
   const menuItems = [
-    { label: 'Profile', icon: <ProfileSettingIcon className="w-6 h-6" />, link: '/profile' },
+    { label: 'Account Settings', icon: <ProfileSettingIcon className="w-6 h-6" />, link: '/account' },
     { label: 'Coupon', icon: <CouponIcon className="w-6 h-6" />, link: '/coupon' },
   ];
 
@@ -51,36 +56,49 @@ const ProfileMenu = ({ isOpen, closeProfileMenu }) => {
 
   const confirmSignOut = () => {
     // Add your sign-out logic here
-    
+
     // gui tin hieu ve server
 
     signOut();
     console.log('Signing out...');
     setIsModalOpen(false); // Close modal after confirming
     closeProfileMenu();
+    navigate("/");
   };
 
   return (
     <>
       {isOpen &&
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 z-10"
-        onClick={closeProfileMenu}> </div>
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 z-50"
+          onClick={closeProfileMenu}> </div>
       }
       <div
-        className={`pt-16 bg-white text-black h-screen transition-all duration-300 ${isOpen ? 'w-64' : 'w-0'
-          } fixed top-0 right-0 bottom-0 z-20 overflow-hidden transition-all duration-300 shadow-lg rounded-r-lg`}
+        className={`bg-white text-black h-screen transition-all duration-300 ${isOpen ? 'w-80' : 'w-0'
+          } fixed top-0 right-0 bottom-0 z-50 overflow-hidden transition-all duration-300 shadow-lg rounded-r-lg`}
       >
-        <ul className={`mt-4`}>
+        <div className="flex p-4 items-center justify-between">
+          <div className="flex p-4 flex-col flex-grow">
+            <div className="text-lg font-bold text-black truncate">{fake_user.fullName}</div>
+            <div className="text-md text-gray-500 truncate max-w-48">{fake_user.email}</div>
+          </div>
+          <button
+            onClick={closeProfileMenu}
+            className="ml-4 p-2 rounded-full hover:bg-gray-200"
+            aria-label="Close Profile Menu"
+          >
+            <CloseProfileMenuIcon className="w-6 h-6" />
+          </button>
+        </div>
+        <ul className="px-2">
           {menuItems.map((item, index) => (
-            <Link to={item.link}>
+            <Link to={item.link} onClick={closeProfileMenu} key={index}>
               <li
-                key={index}
-                className={"flex w-full px-4 items-center space-x-4 py-4 transition-all duration-300 ease-in-out cursor-pointer hover:bg-gray-200"}
+                className="flex w-full rounded-lg px-4 items-center space-x-4 py-4 transition-transform duration-300 ease-in-out cursor-pointer hover:bg-gray-200"
               >
                 <div className="relative flex items-center">
                   {item.icon}
                   <span
-                    className={"mt-1 px-2 text-lg font-medium whitespace-nowrap transform transition-all duration-300"}
+                    className="mt-1 px-2 text-lg font-medium whitespace-nowrap transform transition-all duration-300"
                   >
                     {item.label}
                   </span>
@@ -89,13 +107,13 @@ const ProfileMenu = ({ isOpen, closeProfileMenu }) => {
             </Link>
           ))}
           <li
-            className={"flex w-full px-4 items-center space-x-4 py-4 transition-all duration-300 ease-in-out cursor-pointer hover:bg-gray-200"}
+            className="flex w-full rounded-lg px-4 items-center space-x-4 py-4 transition-transform duration-300 ease-in-out cursor-pointer hover:bg-gray-200 text-red-500"
             onClick={handleSignOut}
           >
-            <div className="relative flex items-center text-red-500">
-              <SignOutIcon className="size-6" />
+            <div className="relative flex items-center">
+              <SignOutIcon className="w-6 h-6" />
               <span
-                className={"mt-1 px-2 text-lg font-medium whitespace-nowrap transform transition-all duration-300"}
+                className="mt-1 px-2 text-lg font-medium whitespace-nowrap transform transition-all duration-300"
               >
                 Sign out
               </span>

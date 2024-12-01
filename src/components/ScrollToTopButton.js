@@ -34,11 +34,11 @@ const ScrollToTopButton = ({ threshold = 200, size = 48 }) => {
       role="button" // Tối ưu hóa accessibility
       className={`fixed z-10 bottom-10 right-10 flex items-center justify-center rounded-full shadow-md cursor-pointer transition-opacity duration-300
         ${visible ? 'opacity-100' : 'opacity-0 pointer-events-none'} 
-        bg-blue-500 hover:bg-blue-600 focus:outline-none active:bg-blue-700`}
+        bg-white bg-opacity-70 hover:bg-opacity-100 focus:outline-none`}
       style={{ width: size, height: size }}
       aria-hidden={!visible} // Ẩn khỏi công cụ trợ giúp khi không hiển thị
     >
-      <FaArrowUp className="text-white" />
+      <FaArrowUp className="text-blue-600" />
     </button>
   );
 };

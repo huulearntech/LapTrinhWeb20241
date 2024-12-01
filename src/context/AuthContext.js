@@ -1,32 +1,3 @@
-// AuthContext.js
-// import React, { createContext, useContext, useState } from 'react';
-
-// const AuthContext = createContext();
-
-// export const AuthProvider = ({ children }) => {
-//   const [isAuthenticated, setIsAuthenticated] = useState(false);
-//   const [user, setUser] = useState(null); // To store user info
-
-//   const signIn = (userInfo) => {
-//     setUser(userInfo);
-//     setIsAuthenticated(true);
-//   };
-
-//   const signOut = () => {
-//     setUser(null);
-//     setIsAuthenticated(false);
-//   };
-
-//   return (
-//     <AuthContext.Provider value={{ isAuthenticated, user, signIn, signOut }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
-
-// export const useAuth = () => useContext(AuthContext);
-
-
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
 // Tạo context để quản lý trạng thái đăng nhập
@@ -42,7 +13,7 @@ export const AuthProvider = ({ children }) => {
     const savedUser = JSON.parse(localStorage.getItem('user'));
     if (savedUser) {
       setUser(savedUser); // Nếu có thì đăng nhập tự động
-    }
+    };
   }, []);
 
   const signIn = (userData) => {
@@ -60,4 +31,22 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const withAuthContext = (Component) => (props) => {
+  const authContext = useAuth();
+  return <Component {...props} authContext={authContext} />;
+};
+
+export const AuthRequired = ({ children }) => {
+  const { user } = useAuth();
+  return user ? children : <div>Bạn cần đăng nhập để truy cập trang này</div>;
+}
+
+export const withAuthRequired = (Component) => (props) => {
+  const { user } = useAuth();
+  if (!user) {
+    return <div>Bạn cần đăng nhập để truy cập trang này</div>;
+  }
+  return <Component {...props} />;
 };

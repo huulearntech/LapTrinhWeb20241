@@ -1,50 +1,57 @@
 import React from 'react';
 
+import hanoiImage from '../assets/images/hanoi.webp';
+import hoianImage from '../assets/images/hoian.jpg';
+import dalatImage from '../assets/images/dalat.jpg';
+import saigonImage from '../assets/images/saigon.jpg';
+import danangImage from '../assets/images/danang.webp';
+
 const products = [
   {
     id: 1,
-    name: 'Product 1',
-    image: 'https://via.placeholder.com/150',
-    description: 'This is a great product.',
+    name: 'Ha Noi',
+    image: hanoiImage,
+    link: '/products/hanoi'
   },
   {
     id: 2,
-    name: 'Product 2',
-    image: 'https://via.placeholder.com/150',
-    description: 'This is another great product.',
+    name: 'Hoi An',
+    image: hoianImage,
+    link: '/products/hanoi'
   },
   {
     id: 3,
-    name: 'Product 3',
-    image: 'https://via.placeholder.com/150',
-    description: 'You will love this product.',
+    name: 'Da Lat',
+    image: dalatImage,
+    link: '/products/hanoi'
   },
   {
     id: 4,
-    name: 'Product 4',
-    image: 'https://via.placeholder.com/150',
-    description: 'This product is very popular.',
+    name: 'Sai Gon',
+    image: saigonImage,
+    link: '/products/hanoi'
+  },
+  {
+    id: 5,
+    name: 'Da Nang',
+    image: danangImage,
+    link: '/products/hanoi'
   },
   // Add more products as needed
 ];
 
 const ProductSection = () => {
   return (
-    <section className="px-12 bg-gray-100">
-      <h2 className="text-2xl font-bold text-center mb-6">Featured Products</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6">
+    <section className="px-8 py-12 bg-gradient-to-r from-blue-100 to-blue-300">
+      <h2 className="text-3xl font-extrabold text-center mb-8 text-gray-800">Explore Our Destinations</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {products.map((product) => (
-          <div key={product.id} className="bg-white border rounded-lg shadow-md transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-48 object-cover rounded-t-lg"
-            />
-            <div className="p-4">
-              <h3 className="text-lg font-semibold">{product.name}</h3>
-              <p className="text-gray-600">{product.description}</p>
+          <a key={product.id} href={product.link} className="relative rounded-lg overflow-hidden shadow-lg group hover:scale-[1.02] hover:shadow-blue-400" style={{ aspectRatio: '1.618' }}>
+            <img src={product.image} alt={product.name} className="w-full h-full object-cover transition duration-300" />
+            <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 p-4 text-white transition-opacity duration-300">
+              <h2 className="text-2xl font-bold">{product.name}</h2>
             </div>
-          </div>
+          </a>
         ))}
       </div>
     </section>
@@ -52,4 +59,3 @@ const ProductSection = () => {
 };
 
 export default ProductSection;
-
