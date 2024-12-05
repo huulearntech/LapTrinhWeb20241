@@ -1,11 +1,10 @@
 package com.demo.hotel_booking.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -16,6 +15,7 @@ import lombok.experimental.FieldDefaults;
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    private Long id;
     private String hotelID;
     private String roomID;
     private String description;
@@ -23,8 +23,7 @@ public class Room {
     private String status;
     private String price;
     private int capacity;
-    //private String image;
-    //private String createdAt;
-    //private String updatedAt;
-    //private String deletedAt;
+
+    @ElementCollection
+    private List<String> images;
 }
