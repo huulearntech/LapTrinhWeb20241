@@ -1,3 +1,46 @@
+
+import hanoiImage from './assets/images/hanoi.webp';
+import hoianImage from './assets/images/hoian.jpg';
+import dalatImage from './assets/images/dalat.jpg';
+import saigonImage from './assets/images/saigon.jpg';
+import danangImage from './assets/images/danang.webp';
+
+export const slides = [
+    {
+      id: 1,
+      name: 'Ha Noi',
+      image: hanoiImage,
+      link: '/products/hanoi'
+    },
+    {
+      id: 2,
+      name: 'Hoi An',
+      image: hoianImage,
+      link: '/products/hanoi'
+    },
+    {
+      id: 3,
+      name: 'Da Lat',
+      image: dalatImage,
+      link: '/products/hanoi'
+    },
+    {
+      id: 4,
+      name: 'Sai Gon',
+      image: saigonImage,
+      link: '/products/hanoi'
+    },
+    {
+      id: 5,
+      name: 'Da Nang',
+      image: danangImage,
+      link: '/products/hanoi'
+    },
+    // Add more products as needed
+];
+
+
+
 export const fake_products = [
   {
     name: "Dummy product",

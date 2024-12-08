@@ -5,6 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import { RiMenuLine as SidebarIcon } from 'react-icons/ri';
 import { FaCartShopping as CartIcon } from 'react-icons/fa6';
 
+import { ReactComponent as HeaderLogo } from '../assets/icons/logo_header.svg';
+
 const CartButton = ({ itemCount }) => (
   <Link to="/cart" className="relative inline-block p-2 rounded-full hover:bg-gray-200 cursor-pointer">
     <CartIcon className="w-6 h-6" />
@@ -47,14 +49,14 @@ const Header = ({ onToggleSidebar, onToggleProfileMenu, onOpenAuthModal, isFixed
             <SidebarIcon className="w-6 h-6" />
           </button>
           <Link to="/" className="text-xl font-bold text-blue-700">
-            Logo
+            <HeaderLogo className="h-10" />
           </Link>
         </div>
 
         <div className="flex-grow flex justify-center">
           <div className="hidden lg:flex space-x-6">
-            <Link to="/" className="hover:bg-gray-200 px-4 py-2 rounded-full hover:underline">Home</Link>
-            <Link to="/search" className="hover:bg-gray-200 px-4 py-2 rounded-full hover:underline">Search</Link>
+            <Link to="/" className="hover:bg-gray-200 px-4 py-2 text-lg rounded-full hover:underline">Home</Link>
+            <Link to="/search" className="hover:bg-gray-200 px-4 py-2 text-lg rounded-full hover:underline">Explore</Link>
           </div>
         </div>
 
@@ -68,13 +70,13 @@ const Header = ({ onToggleSidebar, onToggleProfileMenu, onOpenAuthModal, isFixed
             <>
               <button
                 onClick={() => onOpenAuthModal('signIn')}
-                className="bg-inherit px-4 py-2 rounded-full border border-black hover:bg-gray-200"
+                className="px-4 py-2 rounded-lg font-bold bg-blue-500 text-white hover:bg-blue-600"
               >
                 Sign in
               </button>
               <button
                 onClick={() => onOpenAuthModal('signUp')}
-                className="bg-inherit px-4 py-2 rounded-full border border-black hover:bg-gray-200"
+                className="bg-inherit px-4 py-2 rounded-lg font-bold border border-black hover:bg-gray-200"
               >
                 Sign up
               </button>

@@ -42,11 +42,3 @@ export const AuthRequired = ({ children }) => {
   const { user } = useAuth();
   return user ? children : <div>Bạn cần đăng nhập để truy cập trang này</div>;
 }
-
-export const withAuthRequired = (Component) => (props) => {
-  const { user } = useAuth();
-  if (!user) {
-    return <div>Bạn cần đăng nhập để truy cập trang này</div>;
-  }
-  return <Component {...props} />;
-};

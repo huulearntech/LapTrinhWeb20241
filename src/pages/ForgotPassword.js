@@ -71,14 +71,29 @@ const SetNewPassword = ({ onSubmit }) => {
           {showPassword ? <ShowPasswordIcon className="w-6 h-6" /> : <HidePasswordIcon className="w-6 h-6" />}
         </button>
       </div>
-      <InputField
-        label="Confirm Password"
-        name="confirmPassword"
-        type={showPassword ? "text" : "password"}
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-      />
-      <button type="submit" className="w-full bg-blue-500 text-white p-3 rounded">
+      <div className="relative">
+        <InputField
+          label="Confirm Password"
+          name="confirmPassword"
+          type={showPassword ? "text" : "password"}
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        {confirmPassword && (
+          <span className="absolute top-1/2 right-3 transform -translate-y-1/2 flex items-center justify-center p-1 rounded-full">
+            {newPassword === confirmPassword ? (
+              <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            ) : (
+              <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            )}
+          </span>
+        )}
+      </div>
+      <button type="submit" className="w-full bg-blue-500 text-white p-3 rounded disabled:bg-gray-200 disabled:text-gray-500" disabled={newPassword !== confirmPassword}>
         Reset Password
       </button>
     </form>

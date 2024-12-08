@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import RoomSearchBar from "../components/RoomSearchBar";
+import RoomSearchBar from "../components/search_bar";
 import ProductCard from "../components/ProductCard";
 import PaginationBar from "../components/PaginationBar";
 
@@ -87,33 +87,46 @@ const SearchPage = () => {
       {/* Search page layout */}
       <div className="pt-12 flex flex-row w-full max-w-[85%] items-start justify-center space-x-6">
         {/* Chuyển đổi giữa các chế độ hiển thị */}
-        <div className="hidden lg:flex flex-col items-center space-y-4">
-          <Filter />
+        <div className={`${showFilter ? 'max-xl:fixed inset-0 max-xl:bg-gray-500 max-xl:bg-opacity-50 z-20 justify-end' : 'max-xl:hidden'}`}>
+          <div className={`max-xl:bg-white w-72 h-full p-4 overflow-auto transition-all duration-300 ${showFilter ? 'w-72' : 'w-0'}`}>
+            <div className="flex items-center justify-between xl:hidden">
+              <div className="text-xl font-bold text-blue-700">Filter</div>
+              <button
+                onClick={() => setShowFilter(false)}
+                className="p-2 rounded-full hover:bg-gray-200"
+                aria-label="Close Filter"
+              >
+                <CloseFilterIcon className="w-6 h-6" />
+              </button>
+            </div>
+            <Filter />
+          </div>
         </div>
 
+
         {/* Danh sách hoặc lưới sản phẩm */}
-          <div className="flex flex-col space-y-4 w-full max-w-6xl">
-            <div className="flex flex-row justify-between items-center w-full px-4">
-              <button
-                className="h-8 p-2 flex items-center justify-center rounded-lg bg-blue-500 text-white lg:hidden"
-                aria-label="Bộ lọc"
-                onClick={() => setShowFilter(!showFilter)}
-              >
-                <FilterIcon className="text-xl" />
-                <span>Bộ lọc</span>
-              </button>
+        <div className="flex flex-col space-y-4 w-full max-w-6xl">
+          <div className="flex flex-row justify-between items-center w-full px-4">
+            <button
+              className="h-8 p-2 flex items-center justify-center rounded-lg bg-blue-500 text-white xl:hidden"
+              aria-label="Bộ lọc"
+              onClick={() => setShowFilter(!showFilter)}
+            >
+              <FilterIcon className="text-xl" />
+              <span>Bộ lọc</span>
+            </button>
 
-              <select
-                className="h-8 p-2 rounded-lg bg-gray-200 border border-gray-300 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
-                onChange={(e) => console.log(e.target.value)} // Replace with your sorting logic
-              >
-                <option value="price-asc">Lowest price to Highest price</option>
-                <option value="price-desc">Highest price to Lowest price</option>
-                <option value="rating">Rating</option>
-                <option value="popularity">Popularity</option>
-              </select>
+            <select
+              className="h-8 p-2 rounded-lg bg-gray-200 border border-gray-300 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onChange={(e) => console.log(e.target.value)} // Replace with your sorting logic
+            >
+              <option value="price-asc">Lowest price to Highest price</option>
+              <option value="price-desc">Highest price to Lowest price</option>
+              <option value="rating">Rating</option>
+              <option value="popularity">Popularity</option>
+            </select>
 
-              {/* Toggle view mode */}
+            {/* Toggle view mode */}
             <div className="flex">
               {/* List view */}
               <button
@@ -133,8 +146,8 @@ const SearchPage = () => {
               </button>
             </div>
           </div>
-          
-          <div className={isListView ? "space-y-6" : "grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6"}>
+
+          <div className={isListView ? "space-y-6" : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"}>
             {fake_products.map((product, index) => (
               <div key={index}>
                 <ProductCard
@@ -152,29 +165,6 @@ const SearchPage = () => {
               onPageChange={handlePageChange}
             />
           </div>
-        </div>
-      </div>
-
-      {/* Side pane filter for smaller screens */}
-      <div
-        className={`fixed inset-0 bg-gray-500 bg-opacity-50 z-20 flex justify-end lg:hidden transition-opacity duration-300 ${showFilter ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        onClick={() => setShowFilter(false)}
-      >
-        <div
-          className={`bg-white w-68 h-full p-4 overflow-auto transition-transform duration-300 transform ${showFilter ? 'translate-x-0' : 'translate-x-full'}`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="flex items-center justify-between">
-            <div className="text-xl font-bold text-blue-700">Filter</div>
-            <button
-              onClick={() => setShowFilter(false)}
-              className="my-auto p-2 rounded-full hover:bg-gray-200"
-              aria-label="Close Filter"
-            >
-              <CloseFilterIcon className="w-6 h-6" />
-            </button>
-          </div>
-          <Filter />
         </div>
       </div>
     </div>

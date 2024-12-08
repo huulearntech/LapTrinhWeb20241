@@ -53,7 +53,7 @@ const PaginationBar = ({ currentPage, totalPages, onPageChange, maxVisiblePages 
   }
 
 
-  const buttonClass = "flex size-8 items-center justify-center border rounded disabled:bg-gray-200 disabled:text-gray-400";
+  const buttonClass = "flex size-10 items-center justify-center border rounded disabled:bg-gray-200 disabled:text-gray-400";
   const unselectedButtonClass = "bg-white text-blue-500 hover:bg-blue-100";
   const selectedButtonClass = "bg-blue-500 text-white font-bold hover:bg-blue-600";
 
@@ -78,7 +78,7 @@ const PaginationBar = ({ currentPage, totalPages, onPageChange, maxVisiblePages 
               {page}
             </button>
           ) : (
-            <div key={index} className="flex size-8 items-center justify-center text-gray-500">
+            <div key={index} className="flex size-10 items-center justify-center text-gray-500">
               {page}
             </div>
           )

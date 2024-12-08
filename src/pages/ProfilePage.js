@@ -78,16 +78,16 @@ const ProfilePage = () => {
 
   return (
     <div className="flex flex-col lg:flex-row h-screen bg-gray-100">
-      <div className="flex lg:h-full w-full lg:w-1/4 p-6 overflow-auto lg:overflow-hidden bg-white shadow-lg divide-y-2 lg:divide-y-0 lg:divide-x-2 divide-gray-500">
-        <ul className="flex lg:flex-col w-full lg:w-auto overflow-x-auto lg:overflow-x-hidden">
+      <div className="flex lg:h-full w-full lg:w-1/4 p-6 lg:overflow-y-auto bg-white shadow-lg divide-y-2 lg:divide-y-0 lg:divide-x-2 divide-gray-500">
+        <ul className="flex lg:flex-col w-full lg:w-auto overflow-x-auto lg:overflow-x-hidden max-lg:space-x-4 lg:space-y-4">
           {sections.map((section) => (
             <li key={section} className="flex-shrink-0 lg:flex-shrink">
-              <div
+              <button
                 className={`block rounded-lg p-2 ${activeSection === section ? "bg-blue-500 text-white" : "text-gray-700 hover:bg-gray-200"}`}
                 onClick={() => setActiveSection(section)}
               >
                 {section}
-              </div>
+              </button>
             </li>
           ))}
         </ul>

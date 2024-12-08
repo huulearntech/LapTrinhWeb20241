@@ -32,7 +32,10 @@ const AuthModal = ({ isOpen, closeModal, mode }) => {
   return (
     <div
       className={`fixed z-50 flex items-center justify-center inset-0 bg-gray-500 bg-opacity-50 transition-all ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-      onClick={closeModal}
+      onClick={ () => {
+        closeModal();
+        setIsSignUp(mode === 'signUp');
+      }}
     >
       <div
         className={`transition-transform transform w-full max-w-md mx-auto my-20 bg-white rounded-lg p-6 shadow-lg ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}
@@ -40,7 +43,11 @@ const AuthModal = ({ isOpen, closeModal, mode }) => {
       >
         <div className="flex p-2 justify-between items-center">
           <h2 className="text-2xl font-semibold text-gray-800">{isSignUp ? "Sign Up" : "Sign In"}</h2>
-          <button onClick={closeModal} className="flex rounded-full p-1 items-center justify-center text-gray-600 hover:bg-gray-200">
+          <button onClick={ () => {
+            closeModal();
+            setIsSignUp(mode === 'signUp');
+          }}
+             className="flex rounded-full p-1 items-center justify-center text-gray-600 hover:bg-gray-200">
             <CloseModalIcon className="w-6 h-6" />
           </button>
         </div>

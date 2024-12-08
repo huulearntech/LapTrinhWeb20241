@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaAngleDown as ExpandCardIcon } from 'react-icons/fa';
 
-const FilterGroupCard = ({ name, characteristics}) => {
+const FilterGroupCard = ({ name, characteristics }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const handleToggle = () => setIsOpen(!isOpen);
@@ -24,7 +24,7 @@ const FilterGroupCard = ({ name, characteristics}) => {
             <div key={characteristic} className="flex items-center">
               <input type="checkbox" id={characteristic} name={characteristic} className="mr-2 accent-blue-500" />
               <label htmlFor={characteristic}>{characteristic}</label>
-            </div>  
+            </div>
           ))}
         </div>
       </div>
@@ -32,8 +32,57 @@ const FilterGroupCard = ({ name, characteristics}) => {
   );
 };
 
+const PriceRange = ({ minPrice, maxPrice, onChange }) => {
+  return (
+    <div className="rounded-lg shadow-lg bg-white border border-gray-300">
+      <div className="flex flex-col px-4 items-start">
+        <h3 className="my-2 text-lg font-semibold">Price Range</h3>
+        <p className="text-gray-500">Enter your price range</p>
+      </div>
+      <div className="flex flex-row space-x-2 p-4 text-sm">
+        <input
+          type="text"
+          id="minPrice"
+          name="minPrice"
+          className="w-full border border-gray-300 rounded p-2 appearance-none"
+          min="0"
+          placeholder="Min Price"
+          inputMode="numeric"
+          value={minPrice}
+          onChange={onChange}
+        />
+        <span className="self-center">-</span>
+        <input
+          type="text"
+          id="maxPrice"
+          name="maxPrice"
+          className="w-full border border-gray-300 rounded p-2 appearance-none"
+          min="0"
+          placeholder="Max Price"
+          inputMode="numeric"
+          value={maxPrice}
+          onChange={onChange}
+        />
+      </div>
+    </div>
+  );
+}
+
 
 const Filter = () => {
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+
+  const handlePriceRangeChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value.replace(/\D/g, ""); 
+    if (name === 'minPrice') {
+      setMinPrice(value);
+    } else {
+      setMaxPrice(value);
+    }
+  };
+
   return (
     <div className="w-60 space-y-4 overflow-hidden">
       <div className="flex justify-between py-4">
@@ -44,6 +93,7 @@ const Filter = () => {
           Clear
         </button>
       </div>
+      <PriceRange minPrice={minPrice} maxPrice={maxPrice} onChange={handlePriceRangeChange}/>
 
       <FilterGroupCard
         name="Rating"

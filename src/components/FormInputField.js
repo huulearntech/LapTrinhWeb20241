@@ -4,17 +4,6 @@ import React, { useState } from 'react';
 const InputField = ({ label, type, name, value, onChange, disabled }) => {
   const [isFocused, setIsFocused] = useState(false);
 
-  const [error, setError] = useState('');
-
-  const handleBlur = () => {
-    setIsFocused(false);
-    if (!value) {
-      setError(`${label} is required`);
-    } else {
-      setError('');
-    }
-  };
-
   return (
     <div className="relative flex flex-col flex-grow">
       <label
@@ -32,10 +21,9 @@ const InputField = ({ label, type, name, value, onChange, disabled }) => {
         className={`w-full p-3 border rounded text-black focus:outline-none focus:ring-2 ${isFocused ? 'border-blue-500' : 'border-gray-300'}`}
         required
         onFocus={() => setIsFocused(true)}
-        onBlur={handleBlur}
+        onBlur={() => setIsFocused(false)}
         disabled={disabled}
       />
-      {error && <span className="text-red-500 text-sm mt-1">{error}</span>}
     </div>
   );
 };
