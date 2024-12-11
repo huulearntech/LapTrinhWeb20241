@@ -1,8 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProductItem = ({ product }) => {
+  const navigate = useNavigate();
+
   const handleAddToCart = () => {
     alert(`Đã thêm "${product.name}" vào giỏ hàng!`);
+  };
+
+  const handleRedirect = () => {
+    navigate(`/hotel/${product.id}`);
   };
 
   return (
@@ -10,9 +17,14 @@ const ProductItem = ({ product }) => {
       <img
         src={product.image}
         alt={product.name}
-        className="w-full h-40 object-cover rounded-md mb-4"
+        className="w-full h-40 object-cover rounded-md mb-4 cursor-pointer"
       />
-      <h3 className="text-lg font-medium text-gray-800 mb-2">{product.name}</h3>
+      <h3
+        onClick={handleRedirect}
+        className="text-lg font-medium text-gray-800 mb-2 cursor-pointer"
+      >
+        {product.name}
+      </h3>
       <p className="text-blue-600 font-semibold text-sm mb-4">
         {product.price.toLocaleString()} VND
       </p>
