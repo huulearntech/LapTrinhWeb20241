@@ -32,7 +32,14 @@ const RoomInfo = () => {
             comment: "Phong cách hiện đại và tiện nghi cao cấp", 
             location: "22 Lê Lợi, Quận 1, Hồ Chí Minh, Việt Nam",
             service: "Hồ bơi, nhà hàng, phòng tập gym, spa, ...",
-            price: "90 USD"
+            price: "90 USD",
+            facilities: [
+                { name: "Khu vực công cộng", image: "https://via.placeholder.com/200" },
+                { name: "Sảnh chờ", image: "https://via.placeholder.com/200" },
+                { name: "Phòng ngủ", image: "https://via.placeholder.com/200" },
+                { name: "Phòng tắm bên trong", image: "https://via.placeholder.com/200" },
+                { name: "Nhà hàng", image: "https://via.placeholder.com/200" },
+            ]
         }
     ]);
 
@@ -204,14 +211,10 @@ const RoomInfo = () => {
                         </div>
                     )}
                 </div>
-
-                <p>{room[currIndex].comment}</p>
-                <p>{room[currIndex].location}</p>
-                <p>{room[currIndex].service}</p>
-                <div className="flex space-x-4 mt-4">
-                    <button onClick={handlePrevious} className="btn">Previous</button>
-                    <button onClick={handleNext} className="btn">Next</button>
-                </div>
+            </div>
+            <div className="flex space-x-4 mt-4">
+                <button onClick={handlePrevious} className="btn">Previous</button>
+                <button onClick={handleNext} className="btn">Next</button>
             </div>
         </div>
     )
