@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { SlideShow } from "../components";
+import { SlideShow, RoomList } from "../components";
+
 
 const RoomInfo = () => {
     const images = [
@@ -16,7 +17,7 @@ const RoomInfo = () => {
             comment: "Rất rộng rãi và thích hợp cho 2 người", 
             location: "57-59 Đỗ Bí, Mỹ An, Ngũ Hành Sơn, Đà Nẵng, Việt Nam",
             service: "Điều hòa, thang máy, nhà hàng, lễ tân 24h, ...",
-            price: "88 USD",
+            price: "800.000 VND",
             facilities: [
                 { name: "Khu vực công cộng", image: "https://via.placeholder.com/200" },
                 { name: "Sảnh chờ", image: "https://via.placeholder.com/200" },
@@ -32,7 +33,7 @@ const RoomInfo = () => {
             comment: "Phong cách hiện đại và tiện nghi cao cấp", 
             location: "22 Lê Lợi, Quận 1, Hồ Chí Minh, Việt Nam",
             service: "Hồ bơi, nhà hàng, phòng tập gym, spa, ...",
-            price: "90 USD",
+            price: "1.200.000 VND",
             facilities: [
                 { name: "Khu vực công cộng", image: "https://via.placeholder.com/200" },
                 { name: "Sảnh chờ", image: "https://via.placeholder.com/200" },
@@ -162,7 +163,37 @@ const RoomInfo = () => {
                     </div>
                 </div>
 
-                
+                <RoomList />
+
+                <div className="bg-gray-50">
+                    <div className="relative">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <img
+                            src="https://via.placeholder.com/300x200"
+                            alt="Reception"
+                            className="w-full h-64 object-cover"
+                        />
+                        <img
+                            src="https://via.placeholder.com/300x200"
+                            alt="Room"
+                            className="w-full h-64 object-cover"
+                        />
+                        </div>
+                        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 py-4">
+                            <h1 className="text-white text-lg md:text-2xl font-bold ml-4">
+                                Khám phá thêm về {room[currIndex].name}
+                            </h1>
+                        </div>
+                    </div>
+                    <div className="p-6">
+                        <h2 className="text-sm font-bold text-gray-800 mb-4">
+                            Mô tả về khách sạn {room[currIndex].name}
+                        </h2>
+                        <p className="text-gray-700 text-xs leading-relaxed">
+                            { room[currIndex].comment }
+                        </p>
+                    </div>
+                </div>
 
                 <div className="bg-white shadow-md rounded-lg p-5">
                     <h2 className="text-xl font-bold text-gray-800 mb-4">
