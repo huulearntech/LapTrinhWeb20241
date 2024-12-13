@@ -8,6 +8,7 @@ import com.demo.hotel_booking.exception.InvalidBookingRequestException;
 import com.demo.hotel_booking.exception.ResourceNotFoundException;
 import com.demo.hotel_booking.service.IBookingService;
 import com.demo.hotel_booking.service.IRoomService;
+import com.demo.hotel_booking.service.RoomServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequestMapping("/bookings")
 public class BookingController {
     private final IBookingService bookingService;
-    private final IRoomService roomService;
+    private final RoomServiceImpl roomService;
 
     @GetMapping("/all-bookings")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -77,11 +78,11 @@ public class BookingController {
     }
 
     private BookingResponse getBookingResponse(BookedRoom booking) {
-        Room theRoom = roomService.getRoomById(booking.getRoom().getId()).get();
+        Room theRoom = roomService.getRoomById(booking.getRoom().getRoomID()).get();
         RoomResponse room = new RoomResponse(
-                theRoom.getId(),
-                theRoom.getRoomType(),
-                theRoom.getRoomPrice());
+                theRoom.getRoomID(),
+                theRoom.getType(),
+                theRoom.getPrice());
         return new BookingResponse(
                 booking.getBookingId(), booking.getCheckInDate(),
                 booking.getCheckOutDate(),booking.getGuestFullName(),

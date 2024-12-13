@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface RoomService {
     Room createRoom(Room room);
     List<Room> getAllRooms();
-    Optional<Room> getRoomById(String roomId);
-    Room updateRoom(String roomId, Room roomDetails);
-    void deleteRoom(String roomId);
+    Optional<Room> getRoomById(Long roomId);
+    Room updateRoom(Long roomId, Room roomDetails);
+    void deleteRoom(Long roomId);
 }

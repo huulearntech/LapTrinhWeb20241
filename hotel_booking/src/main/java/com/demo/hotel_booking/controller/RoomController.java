@@ -28,19 +28,19 @@ public class RoomController {
     }
 
     @GetMapping("/rooms/{roomId}")
-    public ResponseEntity<Room> getRoomById(@PathVariable String roomId) {
+    public ResponseEntity<Room> getRoomById(@PathVariable Long roomId) {
         Room room = roomService.getRoomById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
         return ResponseEntity.ok(room);
     }
 
     @PutMapping("/update/{roomId}")
-    public ResponseEntity<Room> updateRoom(@PathVariable String roomId, @RequestBody Room roomDetails) {
+    public ResponseEntity<Room> updateRoom(@PathVariable Long roomId, @RequestBody Room roomDetails) {
         Room updatedRoom = roomService.updateRoom(roomId, roomDetails);
         return ResponseEntity.ok(updatedRoom);
     }
 
     @DeleteMapping("/delete/{roomId}")
-    public ResponseEntity<Void> deleteRoom(@PathVariable String roomId) {
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long roomId) {
         roomService.deleteRoom(roomId);
         return ResponseEntity.noContent().build();
     }

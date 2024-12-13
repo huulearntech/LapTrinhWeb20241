@@ -1,8 +1,8 @@
 package com.demo.hotel_booking.service;
 
 import com.demo.hotel_booking.entity.Room;
+import com.demo.hotel_booking.exception.RoomNotFoundException;
 import com.demo.hotel_booking.repository.RoomRepository;
-import com.demo.hotel_booking.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 public class RoomServiceImpl implements RoomService {
+
     @Autowired
     private RoomRepository roomRepository;
 
@@ -25,25 +26,43 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Optional<Room> getRoomById(String roomId) {
+    public Optional<Room> getRoomById(Long roomId) {
         return roomRepository.findById(roomId);
     }
 
     @Override
-    public Room updateRoom(String roomId, Room roomDetails) {
-        Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
-        room.setHotelID(roomDetails.getHotelID());
-        room.setDescription(roomDetails.getDescription());
-        room.setType(roomDetails.getType());
-        room.setStatus(roomDetails.getStatus());
-        room.setPrice(roomDetails.getPrice());
-        room.setCapacity(roomDetails.getCapacity());
+    public Room updateRoom(Long roomId, Room roomDetails) {
+        Room room = findRoomByIdOrThrow(roomId);
+
+        if (roomDetails.getDescription() != null) {
+            room.setDescription(roomDetails.getDescription());
+        }
+        if (roomDetails.getType() != null) {
+            room.setType(roomDetails.getType());
+        }
+        if (roomDetails.getStatus() != null) {
+            room.setStatus(roomDetails.getStatus());
+        }
+        if (roomDetails.getPrice() != null) {
+            room.setPrice(roomDetails.getPrice());
+        }
+        if (roomDetails.getCapacity() > 0) {
+            room.setCapacity(roomDetails.getCapacity());
+        }
+        if (roomDetails.getHotel() != null) {
+            room.setHotel(roomDetails.getHotel());
+        }
+
         return roomRepository.save(room);
     }
 
     @Override
-    public void deleteRoom(String roomId) {
-        Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
+    public void deleteRoom(Long roomId) {
+        Room room = findRoomByIdOrThrow(roomId);
         roomRepository.delete(room);
+    }
+
+    private Room findRoomByIdOrThrow(Long roomId) {
+        return roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException("Room with ID " + roomId + " not found"));
     }
 }
