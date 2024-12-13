@@ -27,7 +27,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Optional<Room> getRoomById(Long roomId) {
-        return roomRepository.findById(roomId);
+        return roomRepository.findById(String.valueOf(roomId));
     }
 
     @Override
@@ -63,6 +63,6 @@ public class RoomServiceImpl implements RoomService {
     }
 
     private Room findRoomByIdOrThrow(Long roomId) {
-        return roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException("Room with ID " + roomId + " not found"));
+        return roomRepository.findById(String.valueOf(roomId)).orElseThrow(() -> new RoomNotFoundException("Room with ID " + roomId + " not found"));
     }
 }
