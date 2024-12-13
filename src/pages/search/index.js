@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import RoomSearchBar from "../components/search_bar";
-import ProductCard from "../components/ProductCard";
-import PaginationBar from "../components/PaginationBar";
+import RoomSearchBar from "../../components/search_bar";
+import ProductCard from "../../components/ProductCard";
+import PaginationBar from "../../components/PaginationBar";
 
-import { fake_products } from "../fake_data"
+import { fake_products } from "../../fake_data"
 
 import {
   CiBoxList as ListViewIcon,
@@ -13,7 +13,7 @@ import {
 
 import { RxCross2 as CloseFilterIcon } from "react-icons/rx";
 
-import Filter from "../components/RoomFilter";
+import Filter from "../../components/RoomFilter";
 
 // Sticky SearchBar
 const StickySearchBar = () => {

@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import paths from '../router/paths';
+import paths from '../../router/paths';
 
 
 import { BiHide as HidePasswordIcon, BiShow as ShowPasswordIcon } from "react-icons/bi";
-import InputField from '../components/FormInputField';
+import InputField from '../../components/FormInputField';
 
 const OtpInputForm = ({ onSubmit }) => {
   const [otp, setOtp] = useState("");

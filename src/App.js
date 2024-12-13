@@ -3,14 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import paths from './router/paths';
 
-import Layout from './layouts/Layout';
-import HomePage from './pages/HomePage'
-import ProfilePage from './pages/ProfilePage'
-import SearchPage from './pages/SearchPage'
-import ForgotPassword from './pages/ForgotPassword';
+import Layout from './layouts/common';
+import HomePage from './pages/home';
+import ProfilePage from './pages/profile'
+import SearchPage from './pages/search'
+import ForgotPassword from './pages/forgot_password/ForgotPassword';
 import { AuthRequired } from './context/AuthContext';
-// import Admin from './pages/Admin';
-
 
 const App = () => {
   return (

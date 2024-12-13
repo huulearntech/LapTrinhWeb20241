@@ -5,6 +5,14 @@ import dalatImage from './assets/images/dalat.jpg';
 import saigonImage from './assets/images/saigon.jpg';
 import danangImage from './assets/images/danang.webp';
 
+export const images = {
+  hanoi: hanoiImage,
+  hoian: hoianImage,
+  dalat: dalatImage,
+  saigon: saigonImage,
+  danang: danangImage,
+}
+
 export const slides = [
     {
       id: 1,
