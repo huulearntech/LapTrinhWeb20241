@@ -76,7 +76,6 @@ const RoomList = () => {
                     </div>
                 </div>
 
-                {/* Pricing and Selection */}
                 <div className="flex flex-col items-end justify-between w-1/4">
                     {room.isPopular && (
                     <div className="bg-red-100 text-red-600 text-xs px-2 py-1 rounded-full">

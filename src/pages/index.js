@@ -1,1 +1,1 @@
-export { default as RoomInfo } from "./RoomInfo"
+export { default as HotelInfo } from "./HotelInfo"

@@ -4,7 +4,7 @@ import { Home, Login } from './containers/Public';
 import { path } from './ultils/constant';
 import { ProductList } from './containers/Public';
 import { OrderPayment } from "./components"
-import { RoomInfo } from "./pages";
+import { HotelInfo } from "./pages";
 
 function App() {
 
@@ -18,11 +18,10 @@ function App() {
       <Routes>
         <Route  path={path.HOME} element={<Home />}>
           <Route path={path.LOGIN} element={<Login />} />
-          <Route path={path.HOTEL} element={<RoomInfo />} />
+          <Route path={path.HOTEL} element={<HotelInfo />} />
           <Route path={path.PAYMENT} element={<OrderPayment />} />
           <Route path={path.PRODUCTLIST} element={<ProductList products={products} />} />
         </Route>
-
       </Routes>
       
     </div>
