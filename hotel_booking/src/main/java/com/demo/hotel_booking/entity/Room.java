@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,4 +31,16 @@ public class Room {
     @ManyToOne
     @JoinColumn(name = "hotelID", referencedColumnName = "hotelID")
     private Hotel hotel;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BookedRoom> bookings = new ArrayList<>();
+
+    public List<BookedRoom> getBookings() {
+        return bookings;
+    }
+
+    public void addBooking(BookedRoom booking) {
+        bookings.add(booking);
+        booking.setRoom(this);
+    }
 }

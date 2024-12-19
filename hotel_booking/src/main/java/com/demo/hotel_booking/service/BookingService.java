@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingService implements IBookingService {
     private final BookingRepository bookingRepository;
-    private final IRoomService roomService;
+    private final RoomServiceImpl roomService;
 
 
     @Override

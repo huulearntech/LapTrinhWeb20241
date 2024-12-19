@@ -7,7 +7,6 @@ import com.demo.hotel_booking.entity.Room;
 import com.demo.hotel_booking.exception.InvalidBookingRequestException;
 import com.demo.hotel_booking.exception.ResourceNotFoundException;
 import com.demo.hotel_booking.service.IBookingService;
-import com.demo.hotel_booking.service.IRoomService;
 import com.demo.hotel_booking.service.RoomServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

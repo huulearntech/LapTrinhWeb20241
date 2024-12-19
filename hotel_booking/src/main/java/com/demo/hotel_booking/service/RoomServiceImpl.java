@@ -1,22 +1,31 @@
 package com.demo.hotel_booking.service;
 
 import com.demo.hotel_booking.entity.Room;
-import com.demo.hotel_booking.exception.RoomNotFoundException;
 import com.demo.hotel_booking.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class RoomServiceImpl implements RoomService {
-
     @Autowired
     private RoomRepository roomRepository;
 
+    @Autowired
+    private ImageUploadService imageUploadService;
+
     @Override
-    public Room createRoom(Room room) {
+    public Room createRoom(Room room, MultipartFile file) throws IOException {
+        if (file != null && !file.isEmpty()) {
+            Map uploadResult = imageUploadService.uploadImage(file);
+            String imageUrl = (String) uploadResult.get("url");
+            room.getImages().add(imageUrl);
+        }
         return roomRepository.save(room);
     }
 
@@ -32,37 +41,22 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room updateRoom(Long roomId, Room roomDetails) {
-        Room room = findRoomByIdOrThrow(roomId);
-
-        if (roomDetails.getDescription() != null) {
-            room.setDescription(roomDetails.getDescription());
-        }
-        if (roomDetails.getType() != null) {
-            room.setType(roomDetails.getType());
-        }
-        if (roomDetails.getStatus() != null) {
-            room.setStatus(roomDetails.getStatus());
-        }
-        if (roomDetails.getPrice() != null) {
-            room.setPrice(roomDetails.getPrice());
-        }
-        if (roomDetails.getCapacity() > 0) {
-            room.setCapacity(roomDetails.getCapacity());
-        }
-        if (roomDetails.getHotel() != null) {
-            room.setHotel(roomDetails.getHotel());
-        }
-
+        Room room = roomRepository.findById(String.valueOf(roomId))
+                .orElseThrow(() -> new RuntimeException("Room not found"));
+        room.setDescription(roomDetails.getDescription());
+        room.setType(roomDetails.getType());
+        room.setStatus(roomDetails.getStatus());
+        room.setPrice(roomDetails.getPrice());
+        room.setCapacity(roomDetails.getCapacity());
+        room.setImages(roomDetails.getImages());
+        room.setHotel(roomDetails.getHotel());
         return roomRepository.save(room);
     }
 
     @Override
     public void deleteRoom(Long roomId) {
-        Room room = findRoomByIdOrThrow(roomId);
+        Room room = roomRepository.findById(String.valueOf(roomId))
+                .orElseThrow(() -> new RuntimeException("Room not found"));
         roomRepository.delete(room);
-    }
-
-    private Room findRoomByIdOrThrow(Long roomId) {
-        return roomRepository.findById(String.valueOf(roomId)).orElseThrow(() -> new RoomNotFoundException("Room with ID " + roomId + " not found"));
     }
 }
