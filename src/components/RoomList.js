@@ -11,7 +11,7 @@ const RoomList = () => {
       description: "Thanh toán khi bạn nhận phòng tại nơi ở",
       bedType: "1 giường cỡ king",
       originalPrice: "716.490 VND",
-      discountedPrice: "214.947 VND",
+      discountedPrice: "650.000 VND",
       isPopular: true,
     },
     {
