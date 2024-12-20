@@ -32,12 +32,9 @@ public class Room {
     @JoinColumn(name = "hotelID", referencedColumnName = "hotelID")
     private Hotel hotel;
 
+    @Getter
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookedRoom> bookings = new ArrayList<>();
-
-    public List<BookedRoom> getBookings() {
-        return bookings;
-    }
 
     public void addBooking(BookedRoom booking) {
         bookings.add(booking);

@@ -14,11 +14,12 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Hotel {
     @Id
-    private String hotelID;
-    private String hotelName;
-    private String hotelAddress;
-    private String hotelEmail;
-    private String hotelPassword;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long hotelID;
+    private String name;
+    private String address;
+    private String email;
+    private String password;
 
     @OneToMany(mappedBy = "hotel")
     private List<Room> rooms;

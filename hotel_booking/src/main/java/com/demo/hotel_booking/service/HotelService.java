@@ -19,7 +19,7 @@ public class HotelService {
         return hotelRepository.findHotelsWithAvailableRooms(address, checkInDate, checkOutDate, numOfPeople);
     }
 
-    public List<Room> findRoomsByHotelId(String hotelId) {
-        return hotelRepository.findById(hotelId).orElseThrow().getRooms();
+    public List<Room> findRoomsByHotelId(Long hotelId) {
+        return hotelRepository.findById(String.valueOf(hotelId)).orElseThrow().getRooms();
     }
 }
