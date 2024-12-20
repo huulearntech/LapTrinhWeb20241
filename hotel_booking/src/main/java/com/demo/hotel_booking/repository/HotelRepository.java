@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface HotelRepository extends JpaRepository<Hotel, String> {
+public interface HotelRepository extends JpaRepository<Hotel, Long> {
 
     @Query("SELECT DISTINCT h FROM Hotel h JOIN h.rooms r WHERE h.address = :address AND r.capacity >= :numOfPeople AND r.roomID NOT IN " +
             "(SELECT br.room.roomID FROM BookedRoom br WHERE br.checkInDate <= :checkOutDate AND br.checkOutDate >= :checkInDate)")

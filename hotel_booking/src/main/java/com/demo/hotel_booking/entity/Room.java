@@ -3,8 +3,13 @@ package com.demo.hotel_booking.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,4 +45,20 @@ public class Room {
         bookings.add(booking);
         booking.setRoom(this);
     }
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    @Column(insertable = false)
+    private LocalDateTime lastModifiedDate;
+
+    @CreatedBy
+    @Column(nullable = false, updatable = false)
+    private String createdBy;
+
+    @LastModifiedBy
+    @Column(insertable = false)
+    private String lastModifiedBy;
 }
