@@ -9,11 +9,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FeedBackRepository extends JpaRepository<Feedback, Integer> {
+public interface FeedBackRepository extends JpaRepository<Feedback, Long> {
     @Query("""
             SELECT feedback
             FROM Feedback  feedback
-            WHERE feedback.room.roomID = :roomId
+            WHERE feedback.room.id = :roomId
 """)
-    Page<Feedback> findAllByBookId(@Param("bookId") Integer bookId, Pageable pageable);
+    Page<Feedback> findAllByRoomId(@Param("roomId") Long roomId, Pageable pageable);
 }

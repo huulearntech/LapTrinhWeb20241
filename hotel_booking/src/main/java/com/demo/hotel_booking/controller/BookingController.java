@@ -77,9 +77,9 @@ public class BookingController {
     }
 
     private BookingResponse getBookingResponse(BookedRoom booking) {
-        Room theRoom = roomService.getRoomById(booking.getRoom().getRoomID()).get();
+        Room theRoom = roomService.getRoomById(booking.getRoom().getId()).get();
         RoomResponse room = new RoomResponse(
-                theRoom.getRoomID(),
+                theRoom.getId(),
                 theRoom.getType(),
                 theRoom.getPrice());
         return new BookingResponse(

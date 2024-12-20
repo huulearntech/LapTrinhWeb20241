@@ -43,10 +43,10 @@ public class FeedbackService {
     }
 
     @Transactional
-    public PageResponse<FeedbackResponse> findAllFeedbacksByBook(Integer bookId, int page, int size, Authentication connectedUser) {
+    public PageResponse<FeedbackResponse> findAllFeedbacksByRoom(Long roomId, int page, int size, Authentication connectedUser) {
         Pageable pageable = PageRequest.of(page, size);
         User user = ((User) connectedUser.getPrincipal());
-        Page<Feedback> feedbacks = feedBackRepository.findAllByBookId(bookId, pageable);
+        Page<Feedback> feedbacks = feedBackRepository.findAllByRoomId(roomId, pageable);
         List<FeedbackResponse> feedbackResponses = feedbacks.stream()
                 .map(f -> feedbackMapper.toFeedbackResponse(f, user.getId()))
                 .toList();

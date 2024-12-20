@@ -1,5 +1,6 @@
 package com.demo.hotel_booking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,7 +23,7 @@ import java.util.List;
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roomID;
+    private Long id;
     private String roomNumber;
     private String description;
     private String type;
@@ -33,11 +34,10 @@ public class Room {
     @ElementCollection
     private List<String> images;
 
-    @ManyToOne
-    @JoinColumn(name = "hotelID", referencedColumnName = "hotelID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @Getter
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookedRoom> bookings = new ArrayList<>();
 

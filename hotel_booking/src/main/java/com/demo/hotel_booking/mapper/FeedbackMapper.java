@@ -15,7 +15,7 @@ public class FeedbackMapper {
                 .note(request.note())
                 .comment(request.comment())
                 .room(Room.builder()
-                        .roomID(request.roomId())
+                        .id(request.roomId())
                         .build()
                 )
                 .build();

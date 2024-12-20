@@ -20,6 +20,6 @@ public class HotelService {
     }
 
     public List<Room> findRoomsByHotelId(Long hotelId) {
-        return hotelRepository.findById(String.valueOf(hotelId)).orElseThrow().getRooms();
+        return hotelRepository.findById(hotelId).orElseThrow().getRooms();
     }
 }
