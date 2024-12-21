@@ -30,9 +30,14 @@ public class User implements UserDetails, Principal {
     @GeneratedValue
     private Integer id;
     private String fullName;
+    @Column(unique = true)
     private String email;
     private String password;
     private boolean accountLocked;
+    @Column(name = "verification_code")
+    private String verificationCode;
+    @Column(name = "verification_expiration")
+    private LocalDateTime verificationCodeExpiresAt;
     private boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -87,6 +92,6 @@ public class User implements UserDetails, Principal {
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return enabled;
     }
 }

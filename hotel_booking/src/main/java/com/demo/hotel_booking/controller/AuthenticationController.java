@@ -2,6 +2,7 @@ package com.demo.hotel_booking.controller;
 
 import com.demo.hotel_booking.dto.request.AuthenticationRequest;
 import com.demo.hotel_booking.dto.request.RegistrationRequest;
+import com.demo.hotel_booking.dto.request.VerifyUserRequest;
 import com.demo.hotel_booking.dto.response.AuthenticationResponse;
 import com.demo.hotel_booking.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,17 +31,34 @@ public class AuthenticationController {
         return ResponseEntity.accepted().build();
     }
 
-    @PostMapping("/authenticate")
+    @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody @Valid AuthenticationRequest request
     ) {
         return ResponseEntity.ok(service.authenticate(request));
     }
 
-    @GetMapping("/activate-account")
-    public void confirm(
-            @RequestParam String token
-    ) throws MessagingException {
-        service.activateAccount(token);
+    @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
+    @PostMapping("/verify")
+    public ResponseEntity<?> verifyUser(
+            @RequestBody VerifyUserRequest verifyUserDto) {
+        try {
+            service.verifyUser(verifyUserDto);
+            return ResponseEntity.ok("Account verified successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
+    @PostMapping("/resend")
+    public ResponseEntity<?> resendVerificationCode(@RequestParam String email) {
+        try {
+            service.resendVerificationCode(email);
+            return ResponseEntity.ok("Verification code sent");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
