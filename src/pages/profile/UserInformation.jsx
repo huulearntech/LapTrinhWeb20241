@@ -1,67 +1,107 @@
 import React, { useState } from 'react';
-import InputField from '../../components/FormInputField';
-import { BsPencilSquare as EditIcon } from 'react-icons/bs';
-import { FaCheck as SaveIcon } from 'react-icons/fa6';
-import { toast } from 'react-toastify';
-
+import { Input, Button, Form } from 'antd';
+import { EditOutlined, CheckOutlined } from '@ant-design/icons';
+import { notification } from 'antd';
 import { fake_user } from '../../fake_data';
 
 const UserInformation = () => {
   const [user, setUser] = useState(fake_user);
   const [editing, setEditing] = useState(false);
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSave = () => {
+    setEditing(false);
+    notification.success({
+      message: 'Cập nhật thông tin thành công!',
+      placement: 'bottomRight',
+    });
+  };
 
   return (
     <div className="w-full flex justify-center">
       <div className="w-full max-w-xl">
         <div className="flex h-16 justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold">Profile</h2>
+          <h2 className="text-2xl font-semibold">Thông tin cá nhân</h2>
           {!editing && (
-            <button
-              type="button"
+            <Button
+              type="primary"
+              icon={<EditOutlined />}
               onClick={() => setEditing(true)}
-              className="flex p-2 items-center text-blue-500 font-bold text-lg rounded-lg hover:bg-gray-200"
+              className="flex items-center"
             >
-              <EditIcon className="mr-2" />
-              Edit
-            </button>
+              Sửa
+            </Button>
           )}
         </div>
-        <fieldset disabled={!editing}>
-          <form onSubmit={() => { toast.success("Submitted!") }} className="space-y-6">
-            <InputField label="Full Name" name="fullName" type="text" value={user.fullName} onChange={handleChange} disabled={!editing} />
-            <InputField label="Phone number" name="phone" type="text" value={user.phone} onChange={handleChange} disabled={!editing} />
-            <InputField label="Email" name="email" type="email" value={user.email} onChange={handleChange} disabled={!editing} />
-            {editing && (
-              <div className="flex justify-end space-x-4">
-                <button
-                  type="button"
-                  onClick={() => setEditing(false)}
-                  className="flex p-2 items-center text-gray-500 font-bold text-lg rounded-lg hover:bg-gray-200"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  onClick={() => {
-                    setEditing(false);
-                    toast.success("Saved!", toast);
-                  }}
-                  className="flex p-2 items-center text-white font-bold bg-blue-500 text-lg rounded-lg hover:bg-blue-600"
-                >
-                  <SaveIcon className="mr-2" />
-                  Save
-                </button>
-              </div>
-            )}
-          </form>
-        </fieldset>
+        <Form
+          layout="vertical"
+          onFinish={handleSave}
+          initialValues={user}
+          className="space-y-6"
+        >
+          <Form.Item
+            label={<span className="font-semibold">Họ tên</span>}
+            name="fullName"
+            rules={[{ required: true, message: 'Vui lòng nhập họ tên của bạn!' }]}
+          >
+            <Input
+              name="fullName"
+              value={user.fullName}
+              onChange={handleChange}
+              readOnly={!editing}
+              size='large'
+            />
+          </Form.Item>
+          <Form.Item
+            label={<span className="font-semibold">Số điện thoại</span>}
+            name="phone"
+            rules={[{ required: true, message: 'Vui lòng nhập số điện thoại của bạn!' }]}
+          >
+            <Input
+              name="phone"
+              value={user.phone}
+              onChange={handleChange}
+              readOnly={!editing}
+              size='large'
+            />
+          </Form.Item>
+          <Form.Item
+            label={<span className="font-semibold">Email</span>}
+            name="email"
+            rules={[{ required: true, message: 'Vui lòng nhập email của bạn!' }]}
+          >
+            <Input
+              name="email"
+              value={user.email}
+              onChange={handleChange}
+              readOnly={!editing}
+              size='large'
+            />
+          </Form.Item>
+          {editing && (
+            <div className="flex justify-end space-x-4">
+              <Button
+                type="default"
+                onClick={() => setEditing(false)}
+                className="flex items-center"
+              >
+                Hủy
+              </Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                icon={<CheckOutlined />}
+                className="flex items-center"
+              >
+                Lưu
+              </Button>
+            </div>
+          )}
+        </Form>
       </div>
     </div>
   );

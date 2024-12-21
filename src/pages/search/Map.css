@@ -1,0 +1,44 @@
+.leaflet-container {
+  z-index: 0;
+}
+
+.marker-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.marker-price {
+  position: absolute;
+  background-color: #235d9f;
+  color: white;
+  padding: 8px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+  top: -8px;
+  translate: 0% -100%;
+}
+
+.marker-triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 8px solid #235d9f;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  top: -8px;
+}
+
+.marker-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  background-color: orange;
+  border-radius: 50%;
+  margin-top: -4px;
+  margin-left: -4px;
+  /* translate: 50% 100%; */
+}

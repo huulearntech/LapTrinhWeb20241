@@ -73,7 +73,7 @@ export const fake_products = [
       "https://placehold.co/100x75?text=Image+2",
       "https://placehold.co/100x75?text=Image+3"
     ],
-    rating: 2.7,
+    rating: 2.8,
     accommodation: "Hotel",
     location: "New York, USA",
     description: "Bla bla bla",
@@ -81,14 +81,14 @@ export const fake_products = [
     price: 129.99
   },
   {
-    name: "Dummy product",
+    name: "This is a very long name to test the overflow of the text",
     images: [
       "https://placehold.co/400x300?text=Main+Image",
       "https://placehold.co/100x75?text=Image+1",
       "https://placehold.co/100x75?text=Image+2",
       "https://placehold.co/100x75?text=Image+3"
     ],
-    rating: 2.7,
+    rating: 4.9,
     accommodation: "Hotel",
     location: "New York, USA",
     description: "This product is good",
@@ -103,7 +103,7 @@ export const fake_products = [
       "https://placehold.co/100x75?text=Image+2",
       "https://placehold.co/100x75?text=Image+3"
     ],
-    rating: 2.7,
+    rating: 3.2,
     accommodation: "Hotel",
     location: "New York, USA",
     description: "Bla bla bla",

@@ -1,58 +1,19 @@
-import React, { useState, useEffect } from "react";
-import RoomSearchBar from "../../components/search_bar";
-import ProductCard from "../../components/ProductCard";
-import PaginationBar from "../../components/PaginationBar";
+import React, { useState, useLayoutEffect } from "react";
+import SearchBar from "../../components/search_bar";
+import { Pagination, Button } from "antd";
 
-import { fake_products } from "../../fake_data"
+import Filter from "../../components/filter";
 
-import {
-  CiBoxList as ListViewIcon,
-  CiGrid41 as GridViewIcon,
-  CiFilter as FilterIcon
-} from "react-icons/ci";
-
-import { RxCross2 as CloseFilterIcon } from "react-icons/rx";
-
-import Filter from "../../components/RoomFilter";
-
-// Sticky SearchBar
-const StickySearchBar = () => {
-  const [isSticky, setIsSticky] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      if (scrollPosition >= 80) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  return (
-    <div
-      className={`flex py-2 items-center justify-center z-10 w-full transition-colors duration-200
-        ${isSticky ? 'fixed bg-white shadow-md' : 'absolute'}`}
-      style={{ top: isSticky ? '0' : '80px' }}
-    >
-      <RoomSearchBar
-        labelClassName={'text-black'} />
-    </div>
-  );
-
-};
+import { fake_products } from "../../fake_data";
+import Card2 from "../../components/ProductCard";
+import SearchStatus from "./SearchStatus";
+import Map from "./Map";
 
 const SearchPage = () => {
-  const [showFilter, setShowFilter] = useState(false); // Hiển thị bộ lọc
   const [isListView, setIsListView] = useState(true); // Chế độ xem
   const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
+  const [query, setQuery] = useState(''); // Từ khóa tìm kiếm
+  const [isLoading, setIsLoading] = useState(false); // Trạng thái tải dữ liệu
   const totalPages = 20; // Tổng số trang
 
   // Hàm chuyển trang
@@ -62,108 +23,66 @@ const SearchPage = () => {
     }
   };
 
-  const [isCompact, setIsCompact] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 800) {
-        setIsCompact(true);
-      } else {
-        setIsCompact(false);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
+  // Placeholder: Fetch search results
+  useLayoutEffect(() => {
+    setIsLoading(true);
+    console.log('Fetching search results for page:', currentPage);
+    window.setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.clearTimeout();
     };
-  });
+  }, [currentPage]);
 
   return (
-    <div className="flex min-h-screen justify-center">
-      <StickySearchBar />
-
-      {/* Search page layout */}
-      <div className="pt-12 flex flex-row w-full max-w-[85%] items-start justify-center space-x-6">
-        {/* Chuyển đổi giữa các chế độ hiển thị */}
-        <div className={`${showFilter ? 'max-xl:fixed inset-0 max-xl:bg-gray-500 max-xl:bg-opacity-50 z-20 justify-end' : 'max-xl:hidden'}`}>
-          <div className={`max-xl:bg-white w-72 h-full p-4 overflow-auto transition-all duration-300 ${showFilter ? 'w-72' : 'w-0'}`}>
-            <div className="flex items-center justify-between xl:hidden">
-              <div className="text-xl font-bold text-blue-700">Filter</div>
-              <button
-                onClick={() => setShowFilter(false)}
-                className="p-2 rounded-full hover:bg-gray-200"
-                aria-label="Close Filter"
-              >
-                <CloseFilterIcon className="w-6 h-6" />
-              </button>
-            </div>
-            <Filter />
-          </div>
+    <div className="flex flex-row w-full h-full justify-center">
+      <div className="flex flex-col space-y-4 w-full max-w-7xl">
+        <Map />
+        <div className="flex items-center justify-center w-full py-2">
+          <SearchBar />
         </div>
 
+        <div className="flex flex-row w-full space-x-8">
 
-        {/* Danh sách hoặc lưới sản phẩm */}
-        <div className="flex flex-col space-y-4 w-full max-w-6xl">
-          <div className="flex flex-row justify-between items-center w-full px-4">
-            <button
-              className="h-8 p-2 flex items-center justify-center rounded-lg bg-blue-500 text-white xl:hidden"
-              aria-label="Bộ lọc"
-              onClick={() => setShowFilter(!showFilter)}
-            >
-              <FilterIcon className="text-xl" />
-              <span>Bộ lọc</span>
-            </button>
-
-            <select
-              className="h-8 p-2 rounded-lg bg-gray-200 border border-gray-300 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
-              onChange={(e) => console.log(e.target.value)} // Replace with your sorting logic
-            >
-              <option value="price-asc">Lowest price to Highest price</option>
-              <option value="price-desc">Highest price to Lowest price</option>
-              <option value="rating">Rating</option>
-              <option value="popularity">Popularity</option>
-            </select>
-
-            {/* Toggle view mode */}
-            <div className="flex">
-              {/* List view */}
-              <button
-                onClick={() => setIsListView(true)}
-                className={`w-10 h-8 flex items-center justify-center rounded-l-lg transition ${isListView ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                aria-label="Dạng danh sách"
-              >
-                <ListViewIcon className="text-xl" />
-              </button>
-              {/* Grid view */}
-              <button
-                onClick={() => setIsListView(false)}
-                className={`w-10 h-8 flex items-center justify-center rounded-r-lg transition ${!isListView ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                aria-label="Dạng lưới"
-              >
-                <GridViewIcon className="text-xl" />
-              </button>
-            </div>
+          <div className={"w-72 h-full transition-all duration-300"}>
+            <Filter />
           </div>
 
-          <div className={isListView ? "space-y-6" : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"}>
-            {fake_products.map((product, index) => (
-              <div key={index}>
-                <ProductCard
-                  product={product}
-                  compact={!isListView || isCompact}
-                  className="w-full rounded-lg hover:shadow-lg hover:shadow-blue-300 hover:scale-[1.02] transition-transform duration-200" />
-              </div>
-            ))}
-          </div>
-
-          <div className="flex justify-center w-full px-4">
-            <PaginationBar
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
+          <div className="flex flex-col w-full space-y-4">
+            <SearchStatus
+              query={query}
+              found={1372}
+              onSort={(value) => console.log(value)}
+              isListView={isListView}
+              setIsListView={setIsListView}
             />
+
+            {fake_products.length === 0 ?
+              (
+                <div className="flex flex-col items-center justify-center w-full h-96">
+                  <p className="text-lg text-gray-500">Không tìm thấy kết quả nào</p>
+                  <Button type="primary" className="mt-4">Tìm kiếm lại</Button>
+                </div>
+              )
+              :
+              (
+                <div className={isListView ? "flex flex-col w-full space-y-4" : "grid grid-cols-3 gap-4"}>
+                  {fake_products.map((product, index) => (
+                    <Card2 key={index} product={product} isLoading={isLoading} isListView={isListView} />
+                  ))}
+                </div>
+              )
+            }
+
+            <div className="flex justify-center w-full px-4">
+              <Pagination
+                current={currentPage}
+                total={totalPages * 10} // Assuming 10 items per page
+                onChange={handlePageChange}
+              />
+            </div>
           </div>
         </div>
       </div>

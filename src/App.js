@@ -5,23 +5,29 @@ import paths from './router/paths';
 
 import Layout from './layouts/common';
 import HomePage from './pages/home';
-import ProfilePage from './pages/profile'
-import SearchPage from './pages/search'
-import ForgotPassword from './pages/forgot_password/ForgotPassword';
-import { AuthRequired } from './context/AuthContext';
+import ProfilePage from './pages/profile';
+import SearchPage from './pages/search';
+import ForgotPassword from './pages/forgot_password';
+import { AuthProvider, AuthRequired } from './context/AuthContext';
+import HotelManager from './pages/hotel_manager';
+// import Admin from './pages/admin';
+
 
 const App = () => {
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route path={paths.home} element={<HomePage />} />
-          <Route path={paths.account} element={<AuthRequired><ProfilePage /></AuthRequired>} />
-          <Route path={paths.search} element={<SearchPage />} />
-          <Route path={paths.forgotPassword} element={<ForgotPassword />} />
-        </Routes>
-      </Layout>
+      <AuthProvider >
+        <Layout>
+          <Routes>
+            <Route path={paths.home} element={<HomePage />} />
+            <Route path={paths.account} element={<AuthRequired><ProfilePage /></AuthRequired>} />
+            <Route path={paths.search} element={<SearchPage />} />
+            <Route path={paths.forgotPassword} element={<ForgotPassword />} />
+            <Route path={paths.hotelManager} element={<HotelManager />} />
+          </Routes>
+        </Layout>
       {/* <Admin /> */}
+      </AuthProvider>
     </Router>
   );
 };

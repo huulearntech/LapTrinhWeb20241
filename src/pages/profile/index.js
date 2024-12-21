@@ -2,44 +2,53 @@ import React, { useState } from 'react';
 
 import AccountManagement from './AccountManagement';
 import UserInformation from './UserInformation';
+import { Layout, Menu } from 'antd';
+import { UserOutlined, SettingOutlined } from '@ant-design/icons';
 
-
+const { Header, Sider, Content } = Layout;
 
 const ProfilePage = () => {
-  const [activeSection, setActiveSection] = useState('User Information');
-  const sections = ['User Information', 'Account Management'];
+  const [selectedMenu, setSelectedMenu] = useState('userInformation');
 
-  const renderSectionContent = (section) => {
-    switch (section) {
-      case "User Information":
+  const renderContent = () => {
+    switch (selectedMenu) {
+      case 'userInformation':
         return <UserInformation />;
-      case "Account Management":
+      case 'accountManagement':
         return <AccountManagement />;
       default:
-        return null;
+        return <UserInformation />;
     }
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-screen bg-gray-100">
-      <div className="flex lg:h-full w-full lg:w-1/4 p-6 lg:overflow-y-auto bg-white shadow-lg divide-y-2 lg:divide-y-0 lg:divide-x-2 divide-gray-500">
-        <ul className="flex lg:flex-col w-full lg:w-auto overflow-x-auto lg:overflow-x-hidden max-lg:space-x-4 lg:space-y-4">
-          {sections.map((section) => (
-            <li key={section} className="flex-shrink-0 lg:flex-shrink">
-              <button
-                className={`block w-full rounded-full p-3 text-lg ${activeSection === section ? "bg-blue-500 text-white" : "text-gray-700 hover:bg-gray-200"}`}
-                onClick={() => setActiveSection(section)}
-              >
-                {section}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="flex h-full w-full lg:w-3/4 p-6 items-start justify-center overflow-auto">
-        {renderSectionContent(activeSection)}
-      </div>
-    </div>
+    <Layout className="min-h-screen">
+      <Header className="bg-gray-800 text-white flex items-center">
+        <div className="text-xl font-bold">Profile Management</div>
+      </Header>
+      <Layout>
+        <Sider width={300} className="bg-gray-100">
+          <Menu
+            mode="inline"
+            selectedKeys={[selectedMenu]}
+            onClick={({ key }) => setSelectedMenu(key)}
+            style={{ height: '100%', borderRight: 0 }}
+          >
+            <Menu.Item key="userInformation" icon={<UserOutlined />} style={{ padding: '16px', fontSize: '16px' }}>
+              User Information
+            </Menu.Item>
+            <Menu.Item key="accountManagement" icon={<SettingOutlined />} style={{ padding: '16px', fontSize: '16px' }}>
+              Account Management
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Layout style={{ padding: '0 24px 24px' }}>
+          <Content className="p-6 bg-white">
+            {renderContent()}
+          </Content>
+        </Layout>
+      </Layout>
+    </Layout>
   );
 };
 
