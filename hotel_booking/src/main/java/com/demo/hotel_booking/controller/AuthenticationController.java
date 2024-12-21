@@ -20,6 +20,7 @@ public class AuthenticationController {
 
     private final AuthenticationService service;
 
+    @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<?> register (
