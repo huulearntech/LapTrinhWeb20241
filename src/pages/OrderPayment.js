@@ -1,21 +1,11 @@
 import React, { useState } from "react";
 import { SpecialRequest } from '../components'
+import { useLocation } from "react-router-dom";
 
 const OrderPayment = () => {
-  const room = [
-    {
-      name: "Deluxe Double View Room",
-      rate: "Best Available Rate",
-      breakfast: "Không gồm bữa sáng",
-      cancellationPolicy: "Không hoàn tiền",
-      paymentOption: "Thanh Toán Tại Khách Sạn",
-      description: "Thanh toán khi bạn nhận phòng tại nơi ở",
-      bedType: "1 giường cỡ king",
-      originalPrice: "716.490 VND",
-      discountedPrice: "650.000 VND",
-      isPopular: true,
-    }
-  ];
+
+  const location = useLocation();
+  const room = location.state?.room;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -71,6 +61,10 @@ const OrderPayment = () => {
 
   const [isForSomeoneElse, setIsForSomeoneElse] = useState(false);
 
+  if (!room) {
+    return <p>Không có thông tin phòng. Vui lòng chọn lại phòng!</p>;
+  }
+
   const handleRadioChange = (e) => {
     setIsForSomeoneElse(e.target.value === "someoneElse");
   };
@@ -117,7 +111,7 @@ const OrderPayment = () => {
           <div className="w-1/4 flex-shrink-0">
             <img
               src="https://via.placeholder.com/150"
-              alt={room[0].name}
+              alt={room.name}
               className="w-full h-full object-cover rounded-lg"
             />
           </div>
@@ -125,31 +119,31 @@ const OrderPayment = () => {
           {/* Room Information */}
           <div className="flex-1 flex flex-col justify-between px-4">
             <div>
-              <h2 className="font-bold text-gray-800">{room[0].name}</h2>
-              <p className="text-sm text-gray-600">{room[0].rate}</p>
+              <h2 className="font-bold text-gray-800">{room.name}</h2>
+              <p className="text-sm text-gray-600">{room.rate}</p>
               <p className="mt-2 text-sm text-gray-700">
-                <span className="font-medium">Bữa sáng:</span> {room[0].breakfast}
+                <span className="font-medium">Bữa sáng:</span> {room.breakfast}
               </p>
               <ul className="text-sm mt-2 text-gray-700 space-y-1">
-                <li>✔ {room[0].cancellationPolicy}</li>
-                <li>✔ {room[0].paymentOption}</li>
-                <li>{room[0].description}</li>
-                <li>✔ {room[0].bedType}</li>
+                <li>✔ {room.cancellationPolicy}</li>
+                <li>✔ {room.paymentOption}</li>
+                <li>{room.description}</li>
+                <li>✔ {room.bedType}</li>
               </ul>
             </div>
           </div>
 
           <div className="flex flex-col items-end justify-between w-1/4">
-            {room[0].isPopular && (
+            {room.isPopular && (
             <div className="bg-red-100 text-red-600 text-xs px-2 py-1 rounded-full">
                 Được nhiều người chọn!
             </div>
             )}
             <div className="text-right">
               <p className="text-gray-500 line-through text-sm mt-2">
-                {room[0].originalPrice}
+                {room.originalPrice}
               </p>
-              <p className="text-red-600 font-bold text-lg">{room[0].discountedPrice}</p>
+              <p className="text-red-600 font-bold text-lg">{room.discountedPrice}</p>
               <p className="text-xs text-gray-500">Chưa bao gồm thuế và phí</p>
             </div>
           </div>
@@ -301,10 +295,10 @@ const OrderPayment = () => {
         <div className="border-t pt-4">
           <div className="flex justify-between">
             <span className="text-gray-700">Giá phòng</span>
-            <span className="text-gray-700">{ room[0].discountedPrice }</span>
+            <span className="text-gray-700">{ room.discountedPrice }</span>
           </div>
           <p className="text-sm text-gray-500 mt-1">
-            { room[0].name }
+            { room.name }
           </p>
           <div className="flex justify-between mt-4">
             <span className="text-gray-700">Thuế và phí</span>
@@ -312,7 +306,7 @@ const OrderPayment = () => {
           </div>
           <div className="flex justify-between mt-4 font-bold text-lg">
             <span className="text-gray-800">Tổng giá</span>
-            <span className="text-red-600">{ room[0].discountedPrice }</span>
+            <span className="text-red-600">{ room.discountedPrice }</span>
           </div>
         </div>
 

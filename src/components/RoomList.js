@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const RoomList = () => {
   const rooms = [
@@ -39,6 +40,12 @@ const RoomList = () => {
       isPopular: true,
     },
   ];
+
+  const navigate = useNavigate();
+
+  const handleBookNow = (room) => {
+    navigate("/payment", { state: { room } }); // Chuyển hướng và truyền dữ liệu phòng
+  };
 
   return (
     <div className="bg-gray-50 p-2">
@@ -89,8 +96,11 @@ const RoomList = () => {
                     <p className="text-red-600 font-bold text-lg">{room.discountedPrice}</p>
                     <p className="text-xs text-gray-500">Chưa bao gồm thuế và phí</p>
                     </div>
-                    <button className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600">
-                    Đặt phòng
+                    <button 
+                      onClick={() => handleBookNow(room)}
+                      className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
+                    >
+                      Đặt phòng
                     </button>
                 </div>
             </div>
