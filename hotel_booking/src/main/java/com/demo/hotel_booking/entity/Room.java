@@ -26,8 +26,8 @@ public class Room {
     private Long id;
     private String roomNumber;
     private String description;
-    private String type;
-    private String status;
+    private Integer type;
+    private Boolean status;
     private BigDecimal price;
     private int capacity;
 

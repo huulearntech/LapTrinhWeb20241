@@ -20,7 +20,6 @@ public class Hotel {
     private String name;
     private String address;
     private String email;
-    private String password;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Room> rooms = new ArrayList<>();
