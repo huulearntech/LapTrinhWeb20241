@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Home, Login } from './containers/Public';
 import { path } from './ultils/constant';
 import { ProductList } from './containers/Public';
-import { OrderPayment } from "./components"
+import { OrderPayment } from "./pages"
 import { HotelInfo } from "./pages";
 
 function App() {
