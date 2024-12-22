@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 @RequestMapping("/v3/api-docs/users")
 public class UserController {
     @Autowired
@@ -24,7 +25,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/change-password")
+    @PutMapping("/change-password")
     public ResponseEntity<String> changePassword(
             @RequestHeader("Authorization") String token,
             @RequestBody ChangePasswordRequest request) {

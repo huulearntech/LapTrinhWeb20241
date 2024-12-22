@@ -4,8 +4,10 @@ import com.demo.hotel_booking.dto.request.AuthenticationRequest;
 import com.demo.hotel_booking.dto.request.RegistrationRequest;
 import com.demo.hotel_booking.dto.request.VerifyUserRequest;
 import com.demo.hotel_booking.dto.response.AuthenticationResponse;
+import com.demo.hotel_booking.entity.Token;
 import com.demo.hotel_booking.entity.User;
 import com.demo.hotel_booking.repository.RoleRepository;
+import com.demo.hotel_booking.repository.TokenRepository;
 import com.demo.hotel_booking.repository.UserRepository;
 import com.demo.hotel_booking.security.JwtService;
 import jakarta.mail.MessagingException;
@@ -29,6 +31,7 @@ public class AuthenticationService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
     private final EmailService emailService;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
@@ -70,6 +73,11 @@ public class AuthenticationService {
         var user = ((User)auth.getPrincipal());
         claims.put("fullName", user.getFullName());
         var jwtToken = jwtService.generateToken(claims, user);
+        Token token = Token.builder()
+                .token(jwtToken)
+                .user(user)
+                .build();
+        tokenRepository.save(token);
         return AuthenticationResponse.builder()
                 .token(jwtToken).build();
     }

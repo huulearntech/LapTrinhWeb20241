@@ -42,9 +42,9 @@ public class AuthenticationController {
     @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
     @PostMapping("/verify")
     public ResponseEntity<?> verifyUser(
-            @RequestBody VerifyUserRequest verifyUserDto) {
+            @RequestBody VerifyUserRequest request) {
         try {
-            service.verifyUser(verifyUserDto);
+            service.verifyUser(request);
             return ResponseEntity.ok("Account verified successfully");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

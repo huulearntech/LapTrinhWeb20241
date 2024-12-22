@@ -44,6 +44,9 @@ public class User implements UserDetails, Principal {
     @JsonIgnore
     private List<Role> roles;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Token> tokens;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;

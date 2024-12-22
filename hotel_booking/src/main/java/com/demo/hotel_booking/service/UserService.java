@@ -48,6 +48,9 @@ public class UserService {
     public void resetPassword(String email, String newPassword) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if (user.getVerificationCode()!=null) {
+            throw new RuntimeException("Please verify your verification code");
+        }
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
