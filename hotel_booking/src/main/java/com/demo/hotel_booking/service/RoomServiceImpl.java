@@ -1,6 +1,9 @@
 package com.demo.hotel_booking.service;
 
+import com.demo.hotel_booking.dto.request.RoomCreationRequest;
+import com.demo.hotel_booking.entity.Hotel;
 import com.demo.hotel_booking.entity.Room;
+import com.demo.hotel_booking.repository.HotelRepository;
 import com.demo.hotel_booking.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +22,22 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private ImageUploadService imageUploadService;
 
+    @Autowired
+    private HotelRepository hotelRepository;
+
     @Override
-    public Room createRoom(Room room, MultipartFile file) throws IOException {
+    public Room createRoom(RoomCreationRequest roomRequest, MultipartFile file) throws IOException {
+        Hotel hotel = hotelRepository.findById(roomRequest.getHotelId())
+                .orElseThrow(() -> new RuntimeException("Hotel not found"));
+        Room room = Room.builder()
+                .roomNumber(roomRequest.getRoomNumber())
+                .description(roomRequest.getDescription())
+                .type(roomRequest.getType())
+                .status(roomRequest.getStatus())
+                .price(roomRequest.getPrice())
+                .capacity(roomRequest.getCapacity())
+                .hotel(hotel)
+                .build();
         if (file != null && !file.isEmpty()) {
             Map uploadResult = imageUploadService.uploadImage(file);
             String imageUrl = (String) uploadResult.get("url");

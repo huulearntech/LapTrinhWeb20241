@@ -3,17 +3,19 @@ package com.demo.hotel_booking.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoomCreationRequest {
-    private String hotelID;
-    private String roomID;
+    private String roomNumber;
     private String description;
-    private String type;
-    private String status;
-    private String price;
+    private Integer type;
+    private Boolean status;
+    private BigDecimal price;
     private int capacity;
+    private String token;
 }

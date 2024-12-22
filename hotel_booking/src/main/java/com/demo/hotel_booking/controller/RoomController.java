@@ -1,9 +1,9 @@
 package com.demo.hotel_booking.controller;
 
+import com.demo.hotel_booking.dto.request.RoomCreationRequest;
 import com.demo.hotel_booking.entity.Room;
-import com.demo.hotel_booking.service.RoomService;
 import com.demo.hotel_booking.service.RoomServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,18 +11,23 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/managers")
 public class RoomController {
-    @Autowired
-    private RoomServiceImpl roomService;
+    private final RoomServiceImpl roomService;
+
+    public RoomController(RoomServiceImpl roomService) {
+        this.roomService = roomService;
+    }
 
     @PostMapping("/add_rooms")
-    public ResponseEntity<Room> createRoom(@RequestPart Room room, @RequestPart("file") MultipartFile file) {
+    public ResponseEntity<Room> createRoom(@RequestPart RoomCreationRequest room, @RequestPart("file") MultipartFile file) {
         try {
             Room createdRoom = roomService.createRoom(room, file);
             return ResponseEntity.ok(createdRoom);
         } catch (IOException e) {
+            log.error("e: ", e);
             return ResponseEntity.status(500).body(null);
         }
     }
