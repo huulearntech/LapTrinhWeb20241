@@ -1,45 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const RoomList = () => {
-  const rooms = [
-    {
-      name: "Deluxe Double View Room",
-      rate: "Best Available Rate",
-      breakfast: "Không gồm bữa sáng",
-      cancellationPolicy: "Không hoàn tiền",
-      paymentOption: "Thanh Toán Tại Khách Sạn",
-      description: "Thanh toán khi bạn nhận phòng tại nơi ở",
-      bedType: "1 giường cỡ king",
-      originalPrice: "716.490 VND",
-      discountedPrice: "650.000 VND",
-      isPopular: true,
-    },
-    {
-      name: "Executive Suite",
-      rate: "Flexible Rate",
-      breakfast: "Gồm bữa sáng",
-      cancellationPolicy: "Hủy miễn phí",
-      paymentOption: "Thanh Toán Trước",
-      description: "Hoàn tiền nhanh khi bạn hủy",
-      bedType: "2 giường đôi",
-      originalPrice: "1.200.000 VND",
-      discountedPrice: "900.000 VND",
-      isPopular: false,
-    },
-    {
-      name: "Family Room",
-      rate: "Best Value",
-      breakfast: "Không gồm bữa sáng",
-      cancellationPolicy: "Không hoàn tiền",
-      paymentOption: "Thanh Toán Tại Khách Sạn",
-      description: "Dành riêng cho gia đình",
-      bedType: "3 giường cỡ queen",
-      originalPrice: "2.000.000 VND",
-      discountedPrice: "1.800.000 VND",
-      isPopular: true,
-    },
-  ];
+const RoomList = ({ rooms }) => {
 
   const navigate = useNavigate();
 

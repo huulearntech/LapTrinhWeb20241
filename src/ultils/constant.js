@@ -3,5 +3,6 @@ export const path = {
     LOGIN: '/login',
     PAYMENT: "/payment",
     HOTEL: "/hotel/:id",
-    PRODUCTLIST: "/productlist"
+    PRODUCTLIST: "/productlist",
+    FEEDBACK: "/feedback"
 }
