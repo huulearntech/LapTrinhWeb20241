@@ -3,9 +3,8 @@ package com.demo.hotel_booking.service;
 import com.demo.hotel_booking.dto.request.RoomCreationRequest;
 import com.demo.hotel_booking.entity.Hotel;
 import com.demo.hotel_booking.entity.Room;
-import com.demo.hotel_booking.repository.HotelRepository;
 import com.demo.hotel_booking.repository.RoomRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.demo.hotel_booking.security.JwtService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,28 +15,35 @@ import java.util.Optional;
 
 @Service
 public class RoomServiceImpl implements RoomService {
-    @Autowired
-    private RoomRepository roomRepository;
+    private final RoomRepository roomRepository;
 
-    @Autowired
-    private ImageUploadService imageUploadService;
+    private final ImageUploadService imageUploadService;
 
-    @Autowired
-    private HotelRepository hotelRepository;
+    private final HotelService hotelService;
+
+    private final JwtService jwtService;
+
+    public RoomServiceImpl(RoomRepository roomRepository, ImageUploadService imageUploadService, HotelService hotelService, JwtService jwtService) {
+        this.roomRepository = roomRepository;
+        this.imageUploadService = imageUploadService;
+        this.hotelService = hotelService;
+        this.jwtService = jwtService;
+    }
 
     @Override
     public Room createRoom(RoomCreationRequest roomRequest, MultipartFile file) throws IOException {
-        Hotel hotel = hotelRepository.findById(roomRequest.getHotelId())
-                .orElseThrow(() -> new RuntimeException("Hotel not found"));
+        Hotel hotel = hotelService.findHotelByEmail(jwtService.getEmailFromToken(roomRequest.getToken()));
         Room room = Room.builder()
                 .roomNumber(roomRequest.getRoomNumber())
                 .description(roomRequest.getDescription())
                 .type(roomRequest.getType())
                 .status(roomRequest.getStatus())
                 .price(roomRequest.getPrice())
-                .capacity(roomRequest.getCapacity())
+                .numOfAdults(roomRequest.getNumOfAdults())
+                .numOfChildren(roomRequest.getNumOfChildren())
                 .hotel(hotel)
                 .build();
+
         if (file != null && !file.isEmpty()) {
             Map uploadResult = imageUploadService.uploadImage(file);
             String imageUrl = (String) uploadResult.get("url");
@@ -64,7 +70,8 @@ public class RoomServiceImpl implements RoomService {
         room.setType(roomDetails.getType());
         room.setStatus(roomDetails.getStatus());
         room.setPrice(roomDetails.getPrice());
-        room.setCapacity(roomDetails.getCapacity());
+        room.setNumOfAdults(roomDetails.getNumOfAdults());
+        room.setNumOfChildren(roomDetails.getNumOfChildren());
         room.setImages(roomDetails.getImages());
         room.setHotel(roomDetails.getHotel());
         return roomRepository.save(room);

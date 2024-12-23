@@ -21,6 +21,10 @@ public class Hotel {
     private String address;
     private String email;
 
+    @Embedded
+    private Coordinates coordinates;
+
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Room> rooms = new ArrayList<>();
+
 }

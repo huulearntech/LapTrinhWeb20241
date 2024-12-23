@@ -9,10 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoomService {
-    //Room createRoom(Room room);
-
     Room createRoom(RoomCreationRequest room, MultipartFile file) throws IOException;
-
     List<Room> getAllRooms();
     Optional<Room> getRoomById(Long roomId);
     Room updateRoom(Long roomId, Room roomDetails);

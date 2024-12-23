@@ -16,6 +16,7 @@ public class RoomCreationRequest {
     private Integer type;
     private Boolean status;
     private BigDecimal price;
-    private int capacity;
+    private int numOfAdults;
+    private int numOfChildren;
     private String token;
 }

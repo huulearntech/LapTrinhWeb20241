@@ -29,7 +29,8 @@ public class Room {
     private Integer type;
     private Boolean status;
     private BigDecimal price;
-    private int capacity;
+    private int numOfAdults;
+    private int numOfChildren;
 
     @ElementCollection
     private List<String> images;

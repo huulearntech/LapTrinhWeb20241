@@ -1,7 +1,6 @@
 package com.demo.hotel_booking.controller;
 
 import com.demo.hotel_booking.service.ImageUploadService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,8 +12,11 @@ import java.util.Map;
 @RequestMapping("/images")
 public class ImageUploadController {
 
-    @Autowired
-    private ImageUploadService imageUploadService;
+    private final ImageUploadService imageUploadService;
+
+    public ImageUploadController(ImageUploadService imageUploadService) {
+        this.imageUploadService = imageUploadService;
+    }
 
     @PostMapping("/upload")
     public ResponseEntity<Map> uploadImage(@RequestParam("file") MultipartFile file) {

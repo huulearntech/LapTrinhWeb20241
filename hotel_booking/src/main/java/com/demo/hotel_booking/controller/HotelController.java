@@ -1,9 +1,10 @@
 package com.demo.hotel_booking.controller;
 
+import com.demo.hotel_booking.dto.request.HotelRegistrationRequest;
 import com.demo.hotel_booking.entity.Hotel;
 import com.demo.hotel_booking.entity.Room;
 import com.demo.hotel_booking.service.HotelService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,15 +15,19 @@ import java.util.List;
 @RequestMapping("/hotels")
 public class HotelController {
 
-    @Autowired
-    private HotelService hotelService;
+    private final HotelService hotelService;
+
+    public HotelController(HotelService hotelService) {
+        this.hotelService = hotelService;
+    }
 
     @GetMapping("/search")
     public ResponseEntity<List<Hotel>> searchHotels(@RequestParam String address,
                                                     @RequestParam LocalDate checkInDate,
                                                     @RequestParam LocalDate checkOutDate,
-                                                    @RequestParam int numOfPeople) {
-        List<Hotel> availableHotels = hotelService.findHotelsWithAvailableRooms(address, checkInDate, checkOutDate, numOfPeople);
+                                                    @RequestParam int numOfAdults,
+                                                    @RequestParam int numOfChildren) {
+        List<Hotel> availableHotels = hotelService.findHotelsWithAvailableRooms(address, checkInDate, checkOutDate, numOfAdults, numOfChildren);
         return ResponseEntity.ok(availableHotels);
     }
 
@@ -31,4 +36,12 @@ public class HotelController {
         List<Room> rooms = hotelService.findRoomsByHotelId(hotelId);
         return ResponseEntity.ok(rooms);
     }
+
+    @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<String> hotelRegister(@RequestBody HotelRegistrationRequest request) {
+        hotelService.hotelRegister(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Manager registered successfully");
+    }
+
 }
