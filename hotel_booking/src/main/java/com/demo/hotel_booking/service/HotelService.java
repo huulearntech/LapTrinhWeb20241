@@ -35,6 +35,10 @@ public class HotelService {
         return hotelRepository.findHotelsWithAvailableRooms(address, checkInDate, checkOutDate, numOfAdults, numOfChildren);
     }
 
+    public List<Room> findAvailableRooms(Long hotelId, LocalDate checkInDate, LocalDate checkOutDate, int numOfAdults, int numOfChildren) {
+        return hotelRepository.findAvailableRooms(hotelId, checkInDate, checkOutDate, numOfAdults, numOfChildren);
+    }
+
     public List<Room> findRoomsByHotelId(Long hotelId) {
         return hotelRepository.findById(hotelId).orElseThrow().getRooms();
     }

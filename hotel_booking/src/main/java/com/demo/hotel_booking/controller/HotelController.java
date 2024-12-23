@@ -21,7 +21,7 @@ public class HotelController {
         this.hotelService = hotelService;
     }
 
-    @GetMapping("/search")
+    @GetMapping("/available-hotels")
     public ResponseEntity<List<Hotel>> searchHotels(@RequestParam String address,
                                                     @RequestParam LocalDate checkInDate,
                                                     @RequestParam LocalDate checkOutDate,
@@ -29,6 +29,19 @@ public class HotelController {
                                                     @RequestParam int numOfChildren) {
         List<Hotel> availableHotels = hotelService.findHotelsWithAvailableRooms(address, checkInDate, checkOutDate, numOfAdults, numOfChildren);
         return ResponseEntity.ok(availableHotels);
+    }
+
+    @GetMapping("/{hotelId}/available-rooms")
+    public ResponseEntity<List<Room>> getAvailableRooms(
+            @PathVariable Long hotelId,
+            @RequestParam LocalDate checkInDate,
+            @RequestParam LocalDate checkOutDate,
+            @RequestParam int numOfAdults,
+            @RequestParam int numOfChildren) {
+
+        List<Room> availableRooms = hotelService.findAvailableRooms(hotelId, checkInDate, checkOutDate, numOfAdults, numOfChildren);
+
+        return ResponseEntity.ok(availableRooms);
     }
 
     @GetMapping("/{hotelId}/rooms")
