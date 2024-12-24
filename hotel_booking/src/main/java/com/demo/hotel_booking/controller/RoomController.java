@@ -21,7 +21,7 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @PostMapping("/add_rooms")
+    @PostMapping("/add-rooms")
     public ResponseEntity<Room> createRoom(@RequestPart RoomCreationRequest room, @RequestPart("file") MultipartFile file) {
         try {
             Room createdRoom = roomService.createRoom(room, file);
@@ -32,9 +32,9 @@ public class RoomController {
         }
     }
 
-    @GetMapping("/rooms")
-    public ResponseEntity<List<Room>> getAllRooms() {
-        List<Room> rooms = roomService.getAllRooms();
+    @GetMapping("/all-rooms")
+    public ResponseEntity<List<Room>> getAllRooms(@RequestParam String token) {
+        List<Room> rooms = roomService.getAllRooms(token);
         return ResponseEntity.ok(rooms);
     }
 

@@ -16,7 +16,7 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
     List<Hotel> findHotelsWithAvailableRooms(@Param("address") String address,
                                              @Param("checkInDate") LocalDate checkInDate,
                                              @Param("checkOutDate") LocalDate checkOutDate,
-                                             @Param("numOfPeople") int numOfAdults,
+                                             @Param("numOfAdults") int numOfAdults,
                                              @Param("numOfChildren") int numOfChildren);
     @Query("SELECT r FROM Room r WHERE r.hotel.id = :hotelId " +
             "AND r.numOfAdults >= :numOfAdults " +

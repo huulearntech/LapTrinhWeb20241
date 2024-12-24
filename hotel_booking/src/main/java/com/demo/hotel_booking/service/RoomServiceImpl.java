@@ -53,8 +53,9 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Room> getAllRooms() {
-        return roomRepository.findAll();
+    public List<Room> getAllRooms(String token) {
+        Hotel hotel = hotelService.findHotelByEmail(jwtService.getEmailFromToken(token));
+        return roomRepository.findAll().stream().filter(room -> room.getHotel().getId().equals(hotel.getId())).toList();
     }
 
     @Override
