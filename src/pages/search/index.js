@@ -1,25 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { Pagination, Button, Divider, Spin } from "antd";
+import { LeftOutlined } from '@ant-design/icons';
+import dayjs from "dayjs";
+import { debounce } from "lodash";
+
 import SearchBar from "../../components/search_bar";
 import Filter from "../../components/filter";
-import Map from "./map_view";
+import Map from "./map";
 import ProductCard from "../../components/ProductCard";
 import SearchStatus from "./SearchStatus";
 
-import { LeftOutlined } from '@ant-design/icons';
-import { ReactComponent as ShowOnMapImage } from '../../assets/images/show_on_map.svg';
+import ShowOnMapImage from '../../assets/images/show_on_map.svg';
 import mapMarkerIcon from '../../assets/images/map_marker.png';
 import noResult from '../../assets/images/no_result.webp';
 
 import searchServices from "../../services/searchServices";
+import withCommonLayout from "../../layouts_hoc/Common";
 
-import dayjs from "dayjs";
+const gMinPrice = 100_000;
+const gMaxPrice = 20_000_000;
+
 
 const ShowOnMap = ({ onShowMapView }) => {
   return (
-    <div className="relative flex h-28 bg-white border border-gray-300 rounded-lg p-4 justify-center overflow-hidden">
-      <ShowOnMapImage alt="map" className="absolute inset-0 object-cover" />
+    <div className="relative flex w-full h-28 bg-white border border-gray-300 rounded-lg p-4 justify-center overflow-hidden bg-cover bg-center" style={{ backgroundImage: `url(${ShowOnMapImage})` }}>
       <div className="absolute flex flex-col items-center justify-center space-y-2">
         <img src={mapMarkerIcon} alt="marker" className="w-8 h-auto" />
         <Button
@@ -37,50 +42,153 @@ const ShowOnMap = ({ onShowMapView }) => {
 const SearchPage = () => {
   const reactLocation = useLocation();
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [statusLocation, setStatusLocation] = useState('');
+  const [totalResults, setTotalResults] = useState(0);
+
   const [location, setLocation] = useState('');
   const [checkInOut, setCheckInOut] = useState([]);
   const [guestsAndRooms, setGuestsAndRooms] = useState({ adults: 2, children: 0, rooms: 1 });
 
+  const [minPrice, setMinPrice] = useState(gMinPrice);
+  const [maxPrice, setMaxPrice] = useState(gMaxPrice);
+  const [selectedCharacteristics, setSelectedCharacteristics] = useState({
+    'Điểm đánh giá': [],
+    'Loại hình lưu trú': [],
+    'Tiện nghi': []
+  });
+
+  const [filter, setFilter] = useState({
+    minPrice: gMinPrice,
+    maxPrice: gMaxPrice,
+    selectedCharacteristics: {
+      'Điểm đánh giá': [],
+      'Loại hình lưu trú': [],
+      'Tiện nghi': []
+    }
+  });
+
+  const [sortBy, setSortBy] = useState('price-asc');
+
+  const handleSliderChange = useCallback((value) => {
+    setMinPrice(value[0]);
+    setMaxPrice(value[1]);
+  }, []);
+
+  const handlePriceInputChange = useCallback((e) => {
+    const name = e.target.name;
+    const value = e.target.value.replace(/\D/g, "");
+    if (name === 'minPrice') {
+      setMinPrice(value ? parseInt(value, 10) : gMinPrice);
+    } else {
+      setMaxPrice(value ? parseInt(value, 10) : gMaxPrice);
+    }
+  }, []);
+
+  const handleCheckboxChange = useCallback((category, characteristic) => {
+    setSelectedCharacteristics((prev) => {
+      const newSelected = { ...prev };
+      if (newSelected[category].includes(characteristic)) {
+        newSelected[category] = newSelected[category].filter((item) => item !== characteristic);
+      } else {
+        newSelected[category].push(characteristic);
+      }
+      return newSelected;
+    });
+  }, []);
+
+  const handleApplyFilters = useCallback(() => {
+    setFilter({
+      minPrice,
+      maxPrice,
+      selectedCharacteristics
+    });
+  }, [minPrice, maxPrice, selectedCharacteristics]);
+
+  const handleResetFilters = useCallback(() => {
+    setMinPrice(gMinPrice);
+    setMaxPrice(gMaxPrice);
+    setSelectedCharacteristics({
+      'Điểm đánh giá': [],
+      'Loại hình lưu trú': [],
+      'Tiện nghi': []
+    });
+  }, []);
 
   const [isMapView, setIsMapView] = useState(false);
   const [isListView, setIsListView] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [searchResults, setSearchResults] = useState([]);
-  const totalResults = 20;
-
-  useEffect(async () => {
+  useEffect(() => {
     setIsLoading(true);
-    console.log(reactLocation.state);
     const params = new URLSearchParams(reactLocation.search);
-    const location = params.get('location');
+    const location = params.get('location') || '';
     const checkIn = dayjs(params.get('checkIn'));
     const checkOut = dayjs(params.get('checkOut'));
     const adults = parseInt(params.get('adults'));
     const children = parseInt(params.get('children'));
     const rooms = parseInt(params.get('rooms'));
 
-    setLocation(location);
-    setCheckInOut([checkIn, checkOut]);
-    setGuestsAndRooms({ adults, children, rooms });
+    const isValidDate = (date) => date.isValid ? date.isValid() : false;
 
-    try {
+    const validCheckIn = isValidDate(checkIn) ? checkIn : undefined;
+    const validCheckOut = isValidDate(checkOut) ? checkOut : undefined;
+    const validAdults = isNaN(adults) ? 2 : adults;
+    const validChildren = isNaN(children) ? 0 : children;
+    const validRooms = isNaN(rooms) ? 1 : rooms;
+
+    setStatusLocation(location);
+    setLocation(location);
+    setCheckInOut([validCheckIn, validCheckOut]);
+    setGuestsAndRooms({ adults: validAdults, children: validChildren, rooms: validRooms });
+
+    async function getResults() {
       setIsLoading(true);
-      const response = await searchServices.searchBySpec(location, checkIn, checkOut, adults, children, rooms);
+      try {
+        const response = await searchServices.searchBySpec_Filter_Sort_Page(
+          location,
+          validCheckIn,
+          validCheckOut,
+          validAdults,
+          validChildren,
+          validRooms,
+          filter,
+          sortBy,
+          currentPage
+        );
+        setSearchResults(response.data);
+        setTotalResults(response.total);
+      } catch (error) {
+        console.error("Error occurred during search:", error);
+        // Handle the error, e.g., show an error message to the user
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getResults();
+    console.log(sortBy, filter, currentPage, totalResults);
+
+  }, [reactLocation.search, filter, sortBy, currentPage]);
+
+  const fetchHotelsWithinBounds = useCallback(debounce(async (bounds) => {
+    setIsLoading(true);
+    try {
+      const response = await searchServices.searchByMapBounds(bounds);
       setSearchResults(response);
     } catch (error) {
-      console.error("Error occurred during search:", error);
+      console.error("Error occurred during search within bounds:", error);
       // Handle the error, e.g., show an error message to the user
     } finally {
       setIsLoading(false);
     }
-  }, [reactLocation.search]);
+  }, 500), []);
 
   return (
     isMapView ? (
       <div className="relative">
-        <Map center={[51.505, -0.09]} results={searchResults} />
+        <Map center={[51.505, -0.09]} zoom={13} results={searchResults} fetchHotelsWithinBounds={fetchHotelsWithinBounds} />
         <Button
           type="default"
           className="absolute top-2 left-12 font-semibold"
@@ -106,17 +214,26 @@ const SearchPage = () => {
           </div>
 
           <div className="flex flex-row w-full space-x-8">
-            <div className="w-72 h-full transition-all duration-300">
+            <div className="w-80 h-full transition-all duration-300">
               <ShowOnMap onShowMapView={() => setIsMapView(true)} />
               <Divider />
-              <Filter />
+              <Filter
+                minPrice={minPrice}
+                maxPrice={maxPrice}
+                selectedCharacteristics={selectedCharacteristics}
+                onSliderChange={handleSliderChange}
+                onPriceInputChange={handlePriceInputChange}
+                onCheckboxChange={handleCheckboxChange}
+                onApplyFilters={handleApplyFilters}
+                onResetFilters={handleResetFilters}
+              />
             </div>
 
             <div className="flex flex-col w-full items-center space-y-4">
               <SearchStatus
-                location={location}
+                location={statusLocation}
                 found={searchResults.length}
-                onSort={(value) => console.log(value)}
+                onChange={(value) => setSortBy(value)}
                 isListView={isListView}
                 setIsListView={setIsListView}
               />
@@ -145,7 +262,7 @@ const SearchPage = () => {
                         ))}
                       </div>
                       <Pagination
-                        pageSize={24}
+                        pageSize={4}
                         current={currentPage}
                         total={totalResults}
                         onChange={(page) => setCurrentPage(page)}
@@ -162,4 +279,4 @@ const SearchPage = () => {
   );
 };
 
-export default SearchPage;
+export default withCommonLayout(SearchPage);

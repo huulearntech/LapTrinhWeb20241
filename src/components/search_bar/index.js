@@ -26,16 +26,17 @@ const SearchButton = React.memo(({ handleSubmit, isLoading }) => {
 const SearchBar = ({ location, checkInOut, guestsAndRooms, setLocation, setCheckInOut, setGuestsAndRooms }) => {
   const navigate = useNavigate();
   console.log('SearchBar location:', location);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
-    const checkInOutDate = checkInOut.map(date => date.toDate());
+    const checkInOutDate = checkInOut.map(date => date ? date.toDate() : null);
+    const checkInDate = checkInOut[0] ? checkInOut[0].toDate() : new Date(new Date().setDate(new Date().getDate() + 1));
+    const checkOutDate = checkInOut[1] ? checkInOut[1].toDate() : new Date(new Date().setDate(new Date().getDate() + 2));
 
     const queryParams = new URLSearchParams({
       location: location,
-      checkIn: checkInOutDate[0].toISOString(),
-      checkOut: checkInOutDate[1].toISOString(),
+      checkIn: checkInDate.toISOString(),
+      checkOut: checkOutDate.toISOString(),
       adults: guestsAndRooms.adults,
       children: guestsAndRooms.children,
       rooms: guestsAndRooms.rooms
@@ -51,9 +52,9 @@ const SearchBar = ({ location, checkInOut, guestsAndRooms, setLocation, setCheck
       <Location location={location} setLocation={setLocation} />
       <InoutDate checkInOut={checkInOut} setCheckInOut={setCheckInOut} />
       <GuestsAndRooms guestsAndRooms={guestsAndRooms} setGuestsAndRooms={setGuestsAndRooms} />
-      <SearchButton handleSubmit={handleSubmit} isLoading={isLoading} />
+      <SearchButton handleSubmit={handleSubmit} isLoading={false} />
     </div>
   );
 }
 
-export default SearchBar;
+export default React.memo(SearchBar);

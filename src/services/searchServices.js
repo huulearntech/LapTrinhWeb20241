@@ -2,7 +2,17 @@ import axiosInstance from "./axios_instance";
 
 import { fake_locations, fake_products } from "../fake_data";
 
-const searchBySpec = async (location, checkInDate, checkOutDate, adults, children, rooms) => {
+const searchBySpec_Filter_Sort_Page = async (
+  location,
+  checkInDate,
+  checkOutDate,
+  adults,
+  children,
+  rooms,
+  filter,
+  sortBy,
+  currentPage
+) => {
   // try {
   //   const response = await axiosInstance.get('/search', {
   //     params: {
@@ -19,7 +29,7 @@ const searchBySpec = async (location, checkInDate, checkOutDate, adults, childre
   //   console.error("Error searching:", error);
   //   throw error.response?.data || error.message;
   // }
-  return fake_products;
+  return { data: fake_products, total: fake_products.length * 2 };
 }
 
 const searchBySearchList = async (searchList) => {
@@ -31,6 +41,17 @@ const searchBySearchList = async (searchList) => {
     throw error.response?.data || error.message;
   }
 };
+
+const searchByMapBounds = async (mapBounds) => {
+  // try {
+  //   const response = await axiosInstance.post('/search', mapBounds);
+  //   return response.data;
+  // } catch (error) {
+  //   console.error("Error searching:", error);
+  //   throw error.response?.data || error.message;
+  // }
+  return fake_products;
+}
 
 const getLocationsContaining = async (query, amount = 5) => {
   // try {
@@ -47,8 +68,23 @@ const getLocationsContaining = async (query, amount = 5) => {
   return fake_locations.filter(location => location.name.toLowerCase().includes(query.toLowerCase())).slice(0, amount);
 }
 
+const getFavoriteHotelsAtLocation = async (location) => {
+  // try {
+  //   const response = await axiosInstance.get('/search', {
+  //     params
+  //   });
+  //   return response.data;
+  // } catch (error) {
+  //   console.error("Error searching:", error);
+  //   throw error.response?.data || error.message;
+  // }
+  return fake_products;
+};
+
 export default {
-  searchBySpec,
+  searchBySpec_Filter_Sort_Page,
   searchBySearchList,
-  getLocationsContaining
+  searchByMapBounds,
+  getLocationsContaining,
+  getFavoriteHotelsAtLocation
 };
