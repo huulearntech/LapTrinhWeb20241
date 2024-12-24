@@ -10,6 +10,8 @@ import SearchPage from './pages/search';
 import ForgotPassword from './pages/forgot_password';
 import { AuthProvider, AuthRequired } from './context/AuthContext';
 import HotelManager from './pages/hotel_manager';
+import HotelInfoPage from './pages/hotel_info';
+import OrderPaymentPage from './pages/payment';
 // import Admin from './pages/admin';
 
 
@@ -24,6 +26,8 @@ const App = () => {
             <Route path={paths.search} element={<SearchPage />} />
             <Route path={paths.forgotPassword} element={<ForgotPassword />} />
             <Route path={paths.hotelManager} element={<HotelManager />} />
+            <Route path={paths.hotel} element={<HotelInfoPage />} />
+            <Route path={paths.payment} element={<OrderPaymentPage />} />
           </Routes>
         </CommonLayout>
       {/* <Admin /> */}
