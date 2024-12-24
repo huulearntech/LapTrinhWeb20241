@@ -3,6 +3,12 @@ import SlideShow from "./SlideShow";
 import RoomList from "./Roomlist";
 import { getHotelData } from "../../services/roomService";
 
+/////////HOC///////////
+import withCommonLayout from "../../layouts_hoc/Common";
+////////////////////////
+
+
+
 const HotelInfoPage = () => {
     const [rooms, setRooms] = useState([]); // Dữ liệu phòng từ API
 
@@ -226,4 +232,4 @@ const HotelInfoPage = () => {
     )
 }
 
-export default HotelInfoPage
+export default withCommonLayout(HotelInfoPage); // Thêm layout cho trang này

@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import SpecialRequest from "./SpecialRequest";
 import { useLocation } from "react-router-dom";
 
+////////////High Order Component////////////
+import withCommonLayout from "../../layouts_hoc/Common";
+//////////////////////////
+
+
+
 const OrderPaymentPage = () => {
 
   const location = useLocation();
@@ -355,4 +361,4 @@ const OrderPaymentPage = () => {
   );
 };
 
-export default OrderPaymentPage;
+export default withCommonLayout(OrderPaymentPage);  // High Order Component
