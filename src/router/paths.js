@@ -9,6 +9,10 @@ const paths = {
   forgotPassword: '/forgot-password',
   hotelManager: '/hotel-manager',
   partnershipRegister: '/partnership-register',
+
+  // Trang cua ong Huwng
+  payment: '/payment',
+
 };
 
 export default paths;

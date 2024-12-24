@@ -13,6 +13,12 @@ import PartnershipRegister from './pages/partnership_register';
 // import Admin from './pages/admin';
 
 
+/////////////////////////////////////////////
+import HotelInfoPage from './pages/hotel_info';
+import OrderPaymentPage from './pages/payment';
+import CommonLayout from './layouts/CommonLayout';
+
+
 const App = () => {
   return (
     <Router>
@@ -24,7 +30,7 @@ const App = () => {
           <Route path={paths.account} element={<ProfilePage />} />
           <Route path={paths.search} element={<SearchPage />} />
           <Route path={paths.hotelManager} element={<HotelManager />} />
-          
+
           {/* no layout */}
           <Route path={paths.forgotPassword} element={<ForgotPassword />} />
           <Route path={paths.partnershipRegister} element={<PartnershipRegister />} />
@@ -33,6 +39,14 @@ const App = () => {
           {/* <Route path={paths.admin} element={<Admin />} /> */}
 
         </Routes>
+
+
+        {/* Trang cua ong Huwng */}
+        <Routes>
+          <Route path={paths.hotel} element={<HotelInfoPage />} />
+          <Route path={paths.payment} element={<OrderPaymentPage />} />
+        </Routes>
+
       </AuthProvider>
     </Router>
   );
