@@ -1,23 +1,29 @@
 package com.demo.hotel_booking.config;
-
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.List;
+import java.util.Map;
+import java.util.Collections;
+import java.util.Iterator;
 
-public class VNPAYConfig {
+@Component
+public class PaymentConfig {
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     public static String vnp_Returnurl = "/vnpay-payment-return";
     public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+
     @Value("${vnpay.tmncode}")
     public static String vnp_TmnCode;
 
     @Value("${vnpay.hashsecret}")
     public static String vnp_HashSecret;
-
 
     public static String hashAllFields(Map fields) {
         List fieldNames = new ArrayList(fields.keySet());
