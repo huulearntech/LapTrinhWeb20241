@@ -1,54 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Button, Input, Form } from 'antd';
+import { Button, Input, Form } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import { useAuth } from "../context/AuthContext";
-import paths from "../router/paths";
 
-import authServices from '../services/authServices';
-
-const AuthModal = ({ isOpen, closeModal, mode }) => {
-  const { signIn } = useAuth();
-  const [isSignUp, setIsSignUp] = useState(mode === 'signUp');
-  const [form] = Form.useForm();
-
-  useEffect(() => {
-    setIsSignUp(mode === 'signUp');
-  }, [mode]);
-
-  const handleSubmit = async (values) => {
-    if (isSignUp) {
-      try {
-        // Loai bo confirmPassword ra khoi object registrationRequest
-        const { confirmPassword, ...registrationRequest } = values;
-        await authServices.register(registrationRequest);
-        closeModal();
-      } catch (error) {
-        console.error('Đăng ký thất bại', error);
-      }
-    } else {
-      try {
-        const response = await signIn(values);
-        // Do something with the response
-        console.log('Đăng nhập thành công', response);
-        
-        closeModal();
-      } catch (error) {
-        console.error('Đăng nhập thất bại', error);
-      }
-    }
-  };
-
+const AuthForm = ({ form, isSignUp, isLoading, onSubmit }) => {
   return (
-    <Modal
-      open={isOpen}
-      onCancel={closeModal}
-      footer={null}
-      className="rounded-lg p-6"
-    >
-      <div className="flex justify-between items-center mb-4">
+    <div className="relative w-3xl flex flex-col items-center justify-center">
+      <div className="flex w-full items-center mb-4">
         <h2 className="text-2xl font-semibold text-gray-800">{isSignUp ? "Đăng ký" : "Đăng nhập"}</h2>
       </div>
-      <Form form={form} onFinish={handleSubmit} layout="vertical">
+      <Form form={form} onFinish={onSubmit} layout="vertical" className="w-full" disabled={isLoading}>
         {isSignUp && (
           <Form.Item
             label="Họ tên"
@@ -85,6 +44,7 @@ const AuthModal = ({ isOpen, closeModal, mode }) => {
             label="Nhập lại mật khẩu"
             name="confirmPassword"
             dependencies={['password']}
+            hasFeedback
             rules={[
               { required: true, message: 'Vui lòng xác nhận mật khẩu của bạn!' },
               ({ getFieldValue }) => ({
@@ -112,23 +72,8 @@ const AuthModal = ({ isOpen, closeModal, mode }) => {
           </Button>
         </Form.Item>
       </Form>
-      <div className="text-center">
-        <button
-          className='hover:underline text-blue-500'
-          onClick={() => setIsSignUp(!isSignUp)}
-        >
-          {isSignUp ? "Bạn đã có tài khoản? Đăng nhập ở đây" : "Bạn chưa có tài khoản? Đăng ký ở đây"}
-        </button>
-      </div>
-      {!isSignUp && (
-        <div className="text-center mt-1">
-          <a href={paths.forgotPassword} className="text-blue-500 hover:underline">
-            Bạn quên mật khẩu?
-          </a>
-        </div>
-      )}
-    </Modal>
+    </div>
   );
 };
 
-export default AuthModal;
+export default AuthForm;

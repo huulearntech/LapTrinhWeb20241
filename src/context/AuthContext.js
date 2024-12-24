@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
         return;
       }
       try {
-        const response = await authServices.authenticateUser();
+        const response = await authServices.getUserData(token);
         setUser(response.data);
       } catch (error) {
         console.error('Failed to fetch user', error);

@@ -1,66 +1,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { notification } from 'antd';
-import { Input, Button, Form } from 'antd';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import { notification, Steps } from 'antd';
+import EmailStep from './EmailStep';
+import OtpStep from './OtpStep';
+import SetNewPasswordStep from './SetNewPasswordStep';
 import paths from '../../router/paths';
-
-
-const SetNewPassword = ({ onSubmit }) => {
-  const [form] = Form.useForm();
-
-  const handleSubmit = (values) => {
-    onSubmit(values.newPassword, values.confirmPassword);
-  };
-
-  return (
-    <Form form={form} onFinish={handleSubmit} className="space-y-4">
-      <h2 className="text-2xl font-semibold text-center">Reset your password</h2>
-      <Form.Item
-        name="newPassword"
-        rules={[{ required: true, message: 'Please input your new password!' }]}
-      >
-        <Input.Password
-          placeholder="New Password"
-          iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-        />
-      </Form.Item>
-      <Form.Item
-        name="confirmPassword"
-        dependencies={['newPassword']}
-        hasFeedback
-        rules={[
-          { required: true, message: 'Please confirm your password!' },
-          ({ getFieldValue }) => ({
-            validator(_, value) {
-              if (!value || getFieldValue('newPassword') === value) {
-                return Promise.resolve();
-              }
-              return Promise.reject(new Error('The two passwords do not match!'));
-            },
-          }),
-        ]}
-      >
-        <Input.Password
-          placeholder="Confirm Password"
-          iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-        />
-      </Form.Item>
-      <Button type="primary" htmlType="submit" className="w-full">
-        Reset Password
-      </Button>
-    </Form>
-  );
-};
+import userServices from '../../services/userServices'; // Import user services
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
 
-  const handleEmailSubmit = async (values) => {
+  const handleEmailSubmit = async (email) => {
     try {
-      // await axios.post('/api/send-otp', { email: values.email });
+      await userServices.sendVerificationCode(email); // Use sendVerificationCode service
+      setEmail(email);
       setStep(2);
     } catch (error) {
       console.error('Error sending OTP:', error);
@@ -69,30 +24,19 @@ const ForgotPassword = () => {
 
   const handleOtpSubmit = async (otp) => {
     try {
-      // await axios.post('/api/verify-otp', { email, otp });
+      await userServices.verifyCode(email, otp); // Use verifyCode service
       setStep(3);
     } catch (error) {
       console.error('Error verifying OTP:', error);
     }
   };
 
-  const handlePasswordReset = async (newPassword, confirmPassword) => {
-    if (newPassword !== confirmPassword) {
-      notification.error({
-        message: 'Passwords do not match',
-        description: 'Please make sure the passwords match',
-        showProgress: true,
-        pauseOnHover: false,
-        duration: 3,
-      });
-      return;
-    }
-
+  const handlePasswordReset = async (newPassword) => {
     try {
-      // await axios.post('/api/reset-password', { email, newPassword });
+      await userServices.resetPassword(email, newPassword); // Use resetPassword service
       notification.success({
-        message: 'Password reset successfully',
-        description: 'You can now login with your new password',
+        message: 'Đặt lại mật khẩu thành công!',
+        description: 'Bây giờ bạn có thể đăng nhập với mật khẩu mới.',
         showProgress: true,
         pauseOnHover: false,
         duration: 3,
@@ -103,49 +47,31 @@ const ForgotPassword = () => {
     }
   };
 
+  const renderContent = () => {
+    switch (step) {
+      case 1:
+        return <EmailStep onSubmit={handleEmailSubmit} email={email} setEmail={setEmail} />;
+      case 2:
+        return <OtpStep onSubmit={handleOtpSubmit} />;
+      case 3:
+        return <SetNewPasswordStep onSubmit={handlePasswordReset} />;
+      default:
+        return <EmailStep onSubmit={handleEmailSubmit} email={email} setEmail={setEmail} />;
+    }
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md mx-auto my-20 bg-white rounded-lg p-6 shadow-lg">
-        {step === 1 && (
-          <Form onFinish={handleEmailSubmit} className="space-y-4">
-            <h2 className="text-2xl font-semibold text-center">Find your email</h2>
-            <Form.Item
-              name="email"
-              rules={[{ required: true, message: 'Please input your email!' }]}
-            >
-              <Input
-                placeholder="Email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Form.Item>
-            <Button type="primary" htmlType="submit" className="w-full">
-              Send OTP
-            </Button>
-          </Form>
-        )}
-        {step === 2 && (
-          <Form onFinish={handleOtpSubmit} className="flex flex-col items-center space-y-4">
-            <h2 className="text-2xl font-semibold text-center">Enter OTP</h2>
-            <Form.Item
-              name="otp"
-              rules={[{ required: true, message: 'Please input the OTP!' }]}
-            >
-              <Input.OTP
-                maxLength={6}
-                formatter={(value) => value.replace(/\D/g, '')}
-                autoFocus
-                className="w-full p-3 border border-gray-300 rounded"
-                inputMode='numeric'
-              />
-            </Form.Item>
-            <Button type="primary" htmlType="submit" className="w-full">
-              Verify OTP
-            </Button>
-          </Form>
-        )}
-        {step === 3 && <SetNewPassword onSubmit={handlePasswordReset} />}
+    <div className="w-full flex items-center justify-center min-h-screen bg-gray-100">
+
+      <div className="relative flex w-full max-w-4xl h-80 items-center justify-center -translate-y-20 bg-white rounded-lg p-8 shadow-lg">
+        <div className="absolute -top-20 w-full max-w-xl">
+          <Steps current={step - 1} responsive={false}>
+            <Steps.Step title="Email" />
+            <Steps.Step title="OTP" />
+            <Steps.Step title="Đặt mật khẩu mới" />
+          </Steps>
+        </div>
+        {renderContent()}
       </div>
     </div>
   );

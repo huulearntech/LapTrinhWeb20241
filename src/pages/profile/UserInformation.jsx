@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Input, Button, Form } from 'antd';
+import { Input, Button, Form, notification } from 'antd';
 import { EditOutlined, CheckOutlined } from '@ant-design/icons';
-import { notification } from 'antd';
 import { fake_user } from '../../fake_data';
 
 const UserInformation = () => {

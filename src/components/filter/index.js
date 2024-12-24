@@ -1,88 +1,16 @@
 import React, { useState } from 'react';
-import { Collapse, Checkbox, Input, Button, Slider, Divider } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+import PriceRange from './PriceRange';
+import FilterCategory from './FilterCategory';
 
-import { ReactComponent as ShowOnMapImage } from '../../assets/images/show_on_map.svg';
-import mapMarkerIcon from '../../assets/images/map_marker.png';
-
-
-const { Panel } = Collapse;
-
-const FilterGroupCard = ({ name, characteristics }) => {
-  return (
-    <Collapse
-      expandIcon={({ isActive }) => <DownOutlined rotate={isActive ? 180 : 0} />}
-      className="bg-white border border-gray-300 rounded-lg"
-      defaultActiveKey={[name]}
-    >
-      <Panel header={<span className="font-semibold">{name}</span>} key={name}>
-        <div className="flex flex-col space-y-2">
-          {characteristics.map((characteristic) => (
-            <Checkbox key={characteristic} className='hover:text-blue-500 transition-colors duration-300 ease-in-out'>
-              {characteristic}
-            </Checkbox>
-          ))}
-        </div>
-      </Panel>
-    </Collapse>
-  );
-};
-
-const PriceRange = ({ minPrice, maxPrice, onSliderChange, onInputChange }) => {
-  return (
-    <div className="bg-white border border-gray-300 rounded-lg p-4">
-      <h3 className="font-semibold">Khoảng giá</h3>
-      <p className="text-sm text-gray-500 mb-2">1 phòng, 1 đêm (VND)</p>
-      <Slider
-        range
-        min={0}
-        max={1000}
-        value={[minPrice, maxPrice]}
-        onChange={onSliderChange}
-        tooltip={{ formatter: (value) => `$${value}` }}
-      />
-      <div className="flex space-x-2">
-        <Input
-          type="text"
-          id="minPrice"
-          name="minPrice"
-          className="w-full text-sm"
-          placeholder="Min Price"
-          value={minPrice}
-          onChange={onInputChange}
-        />
-        <span className="self-center">-</span>
-        <Input
-          type="text"
-          id="maxPrice"
-          name="maxPrice"
-          className="w-full text-sm"
-          placeholder="Max Price"
-          value={maxPrice}
-          onChange={onInputChange}
-        />
-      </div>
-    </div>
-  );
-};
-
-const ShowOnMap = () => {
-  return (
-    <div className="relative flex h-28 bg-white border border-gray-300 rounded-lg p-4 justify-center overflow-hidden">
-      <ShowOnMapImage alt="map" className="absolute inset-0 object-cover" />
-      <div className="absolute flex flex-col items-center justify-center space-y-2">
-        <img src={mapMarkerIcon} alt="marker" className="w-8 h-auto" />
-        <Button type="primary" className="bg-blue-500 hover:bg-blue-400 font-semibold">
-          Xem trên bản đồ
-        </Button>
-      </div>
-    </div>
-  );
-};
-
-const Filter = () => {
+const Filter = ({ onApply }) => {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
+  const [selectedCharacteristics, setSelectedCharacteristics] = useState({
+    'Điểm đánh giá': [],
+    'Loại hình lưu trú': [],
+    'Tiện nghi': []
+  });
 
   const handleSliderChange = (value) => {
     setMinPrice(value[0]);
@@ -99,15 +27,53 @@ const Filter = () => {
     }
   };
 
+  const handleCheckboxChange = (category, characteristic) => {
+    setSelectedCharacteristics((prev) => {
+      const newSelected = { ...prev };
+      if (newSelected[category].includes(characteristic)) {
+        newSelected[category] = newSelected[category].filter((item) => item !== characteristic);
+      } else {
+        newSelected[category].push(characteristic);
+      }
+      return newSelected;
+    });
+  };
+
+  const handleApplyFilters = () => {
+    const filters = {
+      minPrice,
+      maxPrice,
+      selectedCharacteristics
+    };
+    // Send filters to the server
+    console.log('Filters to send:', filters);
+    // Example: axios.post('/api/filters', filters);
+  };
+
+  const handleResetFilters = () => {
+    setMinPrice(0);
+    setMaxPrice(1000);
+    setSelectedCharacteristics({
+      'Điểm đánh giá': [],
+      'Loại hình lưu trú': [],
+      'Tiện nghi': []
+    });
+  };
+
   return (
     <div className="w-60 space-y-4">
-      <ShowOnMap />
-      <Divider />
       <div className="flex justify-between space-x-6">
-        <Button className="w-full bg-gray-300 text-gray-700 hover:bg-gray-200 font-semibold">
+        <Button
+          className="w-full bg-gray-300 text-gray-700 hover:bg-gray-200 font-semibold"
+          onClick={handleResetFilters}
+        >
           Đặt lại
         </Button>
-        <Button type="primary" className="w-full bg-blue-500 hover:bg-blue-400 font-semibold">
+        <Button
+          type="primary"
+          className="w-full bg-blue-500 hover:bg-blue-400 font-semibold"
+          onClick={onApply}
+        >
           Áp dụng
         </Button>
       </div>
@@ -117,31 +83,24 @@ const Filter = () => {
         onSliderChange={handleSliderChange}
         onInputChange={handleInputChange}
       />
-      <FilterGroupCard name="Điểm đánh giá"
-        characteristics={[
-          '1 sao',
-          '2 sao',
-          '3 sao',
-          '4 sao',
-          '5 sao'
-        ]} />
-      <FilterGroupCard name="Loại hình lưu trú"
-        characteristics={[
-          'Hotel',
-          'Hostel',
-          'Motel',
-          'Resort',
-          'Inn',
-          'Villa'
-        ]} />
-      <FilterGroupCard name="Tiện nghi"
-        characteristics={[
-          'Free Wi-Fi',
-          'Free Parking',
-          'Swimming Pool',
-          'Airport Shuttle',
-          'Pet Friendly'
-        ]} />
+      <FilterCategory
+        name="Điểm đánh giá"
+        characteristics={['1 sao', '2 sao', '3 sao', '4 sao', '5 sao']}
+        selectedCharacteristics={selectedCharacteristics['Điểm đánh giá']}
+        onChange={handleCheckboxChange}
+      />
+      <FilterCategory
+        name="Loại hình lưu trú"
+        characteristics={['Hotel', 'Hostel', 'Motel', 'Resort', 'Inn', 'Villa']}
+        selectedCharacteristics={selectedCharacteristics['Loại hình lưu trú']}
+        onChange={handleCheckboxChange}
+      />
+      <FilterCategory
+        name="Tiện nghi"
+        characteristics={['Free Wi-Fi', 'Free Parking', 'Swimming Pool', 'Airport Shuttle', 'Pet Friendly']}
+        selectedCharacteristics={selectedCharacteristics['Tiện nghi']}
+        onChange={handleCheckboxChange}
+      />
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import paths from './router/paths';
 
-import Layout from './layouts/common';
+import CommonLayout from './layouts/common';
 import HomePage from './pages/home';
 import ProfilePage from './pages/profile';
 import SearchPage from './pages/search';
@@ -17,7 +17,7 @@ const App = () => {
   return (
     <Router>
       <AuthProvider >
-        <Layout>
+        <CommonLayout>
           <Routes>
             <Route path={paths.home} element={<HomePage />} />
             <Route path={paths.account} element={<AuthRequired><ProfilePage /></AuthRequired>} />
@@ -25,7 +25,7 @@ const App = () => {
             <Route path={paths.forgotPassword} element={<ForgotPassword />} />
             <Route path={paths.hotelManager} element={<HotelManager />} />
           </Routes>
-        </Layout>
+        </CommonLayout>
       {/* <Admin /> */}
       </AuthProvider>
     </Router>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { AutoComplete, Input } from 'antd';
 import { CloseCircleFilled, EnvironmentOutlined } from '@ant-design/icons';
 import { debounce } from 'lodash';
-import { getLocationsContaining } from '../../services/searchService';
+import searchServices from '../../services/searchServices';
 
 const Location = React.memo(({ location, setLocation }) => {
   const [options, setOptions] = useState([]);
@@ -11,14 +11,14 @@ const Location = React.memo(({ location, setLocation }) => {
     debounce(async (location) => {
       if (true) {
         try {
-          const locations = await getLocationsContaining(location);
-          setOptions(locations.map(location => ({
-            value: location.name,
+          const results = await searchServices.getLocationsContaining(location);
+          setOptions(results.map(result => ({
+            value: result.name,
             label: (
               <div className="flex flex-row items-center justify-center h-8">
                 <div className="flex flex-row w-full justify-between">
-                  <span className="font-semibold text-blue-500">{location.name}</span>
-                  <span className="text-xs text-gray-500">{location.count + " kết quả"}</span>
+                  <span className="font-semibold text-blue-500">{result.name}</span>
+                  {/* <span className="text-xs text-gray-500">{result.count + " kết quả"}</span> */}
                 </div>
               </div>
             )
@@ -27,15 +27,11 @@ const Location = React.memo(({ location, setLocation }) => {
           console.error('Error fetching location options:', error);
         }
       }
-      // else {
-      //   setOptions([]);
-      // }
-    }, 500), // 500ms debounce delay
+    }, 500),
     []
   );
 
   useEffect(() => {
-    console.log('Location:', location);
     fetchOptions(location);
     return () => {
       fetchOptions.cancel();
@@ -56,15 +52,11 @@ const Location = React.memo(({ location, setLocation }) => {
           cursor: 'default',
         }}
         size='large'
-        popupMatchSelectWidth={false}
-        dropdownStyle={{
-          width: 300,
-          fontSize: '16px'
-        }}
         onChange={setLocation}
+        value={location}
       >
         <Input
-          prefix={<EnvironmentOutlined style={{ fontSize: '20px', marginRight: '4px', color: '#1677ff'}}/>}
+          prefix={<EnvironmentOutlined style={{ fontSize: '20px', marginRight: '4px', color: '#1677ff' }} />}
           style={{
             width: '100%',
             height: '100%',

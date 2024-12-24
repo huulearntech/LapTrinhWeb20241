@@ -1,36 +1,13 @@
 import React, { useState, useCallback } from 'react';
-import { DatePicker, Button } from 'antd';
+import { Button } from 'antd';
 import 'moment/locale/vi';
-import locale from 'antd/es/date-picker/locale/vi_VN';
-import moment from 'moment';
-import { CalendarOutlined, SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import searchServices from '../../services/searchServices';
 
 import Location from './Location';
+import InoutDate from './InoutDate';
 import GuestsAndRooms from './GuestsAndRooms';
-
-const InoutDate = React.memo(({ checkInOut, setCheckInOut }) => {
-  const disabledDate = (current) => {
-    return current && current < moment().startOf('day');
-  };
-
-  return (
-    <div className="flex w-full flex-col">
-      <label className="text-black text-sm font-semibold ml-1 mb-1">Ngày nhận phòng và trả phòng</label>
-        <DatePicker.RangePicker
-          placeholder={['Ngày nhận', 'Ngày trả']}
-          prefix={<CalendarOutlined style={{ fontSize: '20px', marginRight: '4px', color: '#1677ff' }} />}
-          suffixIcon={null}
-          size='large'
-          disabledDate={disabledDate}
-          format={'DD/MM/YYYY'}
-          value={checkInOut}
-          onChange={(dates) => setCheckInOut(dates)}
-          locale={locale}
-        />
-    </div>
-  );
-});
-
 
 const SearchButton = React.memo(({ handleSubmit, isLoading }) => {
   return (
@@ -46,18 +23,28 @@ const SearchButton = React.memo(({ handleSubmit, isLoading }) => {
   );
 });
 
-const SearchBar = () => {
-  const [location, setLocation] = useState('');
-  const [checkInOut, setCheckInOut] = useState([]);
-  const [guestsAndRooms, setGuestsAndRooms] = useState({ adults: 2, children: 0, rooms: 1 });
+const SearchBar = ({ location, checkInOut, guestsAndRooms, setLocation, setCheckInOut, setGuestsAndRooms }) => {
+  const navigate = useNavigate();
+  console.log('SearchBar location:', location);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = useCallback((e) => {
-    setIsLoading(true);
     e.preventDefault();
-    console.log('Search button clicked', { location, checkInOut, guestsAndRooms });
-    setIsLoading(false);
-  }, [location, checkInOut, guestsAndRooms]);
+    const checkInOutDate = checkInOut.map(date => date.toDate());
+
+    const queryParams = new URLSearchParams({
+      location: location,
+      checkIn: checkInOutDate[0].toISOString(),
+      checkOut: checkInOutDate[1].toISOString(),
+      adults: guestsAndRooms.adults,
+      children: guestsAndRooms.children,
+      rooms: guestsAndRooms.rooms
+    }).toString();
+
+    navigate(`/search?${queryParams}`);
+    // navigate(`/search?location=${location}&checkIn=${checkInOutDate[0].toISOString()}&checkOut=${checkInOutDate[1].toISOString()}&adults=${guestsAndRooms.adults}&children=${guestsAndRooms.children}&rooms=${guestsAndRooms.rooms}`);
+
+  }, [location, checkInOut, guestsAndRooms, navigate]);
 
   return (
     <div className="flex w-full max-w-7xl items-end justify-center space-x-2">

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import AuthModal from '../../components/AuthModal';
+import AuthModal from '../../components/auth_modal';
 import Footer from '../../components/Footer';
 import Header from '../../components/header';
 
 import { FloatButton } from 'antd';
 
-const Layout = ({ children }) => {
+const CommonLayout = ({ children }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState('signIn');
   const openModal = (mode) => {
@@ -38,7 +38,7 @@ const Layout = ({ children }) => {
     <div className="layout-root bg-gray-100">
       <Header onOpenAuthModal={openModal} isHeaderVisible={isHeaderVisible}/>
       <FloatButton.BackTop />
-      <AuthModal isOpen={isModalOpen} closeModal={closeModal} mode={authMode} />
+      <AuthModal isOpen={isModalOpen} onClose={closeModal} mode={authMode} setMode={setAuthMode} />
       <main className='pt-20 w-full min-h-screen'>
         {children}
       </main>
@@ -47,4 +47,4 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout;
+export default CommonLayout;

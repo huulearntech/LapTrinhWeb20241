@@ -51,6 +51,7 @@ export const slides = [
 
 export const fake_products = [
   {
+    id: 1,
     name: "Dummy product",
     images: [
       "https://placehold.co/400x300?text=Main+Image",
@@ -63,9 +64,11 @@ export const fake_products = [
     location: "New York, USA",
     description: "This product is good",
     amenities: ["Wifi", "Parking", "Pool"],
-    price: 129.99
+    price: 129.99,
+    position: [51.505, -0.09]
   },
   {
+    id: 2,
     name: "Another dummy product",
     images: [
       "https://placehold.co/400x300?text=Main+Image",
@@ -78,9 +81,11 @@ export const fake_products = [
     location: "New York, USA",
     description: "Bla bla bla",
     amenities: ["Wifi", "Parking", "Pool", "Gym", "Spa"],
-    price: 129.99
+    price: 129.99,
+    position: [51.515, -0.1]
   },
   {
+    id: 3,
     name: "This is a very long name to test the overflow of the text",
     images: [
       "https://placehold.co/400x300?text=Main+Image",
@@ -93,9 +98,11 @@ export const fake_products = [
     location: "New York, USA",
     description: "This product is good",
     amenities: ["Wifi", "Parking", "Pool", "Bar", "Restaurant"],
-    price: 129.99
+    price: 129.99,
+    position: [51.525, -0.11]
   },
   {
+    id: 4,
     name: "Another dummy product",
     images: [
       "https://placehold.co/400x300?text=Main+Image",
@@ -108,7 +115,8 @@ export const fake_products = [
     location: "New York, USA",
     description: "Bla bla bla",
     amenities: ["Wifi", "Parking", "Pool", "Casino"],
-    price: 129.99
+    price: 129.99,
+    position: [51.535, -0.12]
   },
 ];
 
@@ -118,3 +126,36 @@ export const fake_user = {
   phone: "0987654321",
   address: "123 Nguyen Van Linh, Da Nang",
 };
+
+export const fake_locations = [
+  {
+    name: "Hà Nội",
+  },
+  {
+    name: "Hồ Chí Minh",
+  },
+  {
+    name: "Đà Nẵng",
+  },
+  {
+    name: "Hải Phòng",
+  },
+  {
+    name: "Cần Thơ",
+  },
+  {
+    name: "Vũng Tàu",
+  },
+  {
+    name: "Quảng Ninh",
+  },
+  {
+    name: "Nha Trang",
+  },
+  {
+    name: "Đà Lạt",
+  },
+  {
+    name: "Phú Quốc",
+  }
+];
