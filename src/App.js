@@ -16,7 +16,6 @@ import PartnershipRegister from './pages/partnership_register';
 /////////////////////////////////////////////
 import HotelInfoPage from './pages/hotel_info';
 import OrderPaymentPage from './pages/payment';
-import CommonLayout from './layouts/CommonLayout';
 
 
 const App = () => {
