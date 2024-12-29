@@ -1,6 +1,8 @@
 package com.demo.hotel_booking.controller;
 
+import com.demo.hotel_booking.dto.request.BookingRequest;
 import com.demo.hotel_booking.service.PaymentService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
@@ -21,15 +23,15 @@ public class PaymentController {
 
     @PostMapping("/submitOrder")
     public String submitOrder(@RequestParam("amount") int orderTotal,
-                              @RequestParam("orderInfo") String orderInfo,
-                              HttpServletRequest request) {
+                              @RequestParam("orderInfo") BookingRequest bookingInfo,
+                              HttpServletRequest request) throws JsonProcessingException {
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-        String vnpayUrl = paymentService.createOrder(request, orderTotal, orderInfo, baseUrl);
+        String vnpayUrl = paymentService.createOrder(request, orderTotal, bookingInfo, baseUrl);
         return "redirect:" + vnpayUrl;
     }
 
     @GetMapping("/vnpay-payment-return")
-    public String paymentCompleted(HttpServletRequest request, Model model) {
+    public String paymentCompleted(HttpServletRequest request, Model model) throws JsonProcessingException {
         int paymentStatus = paymentService.orderReturn(request);
 
         String orderInfo = request.getParameter("vnp_OrderInfo");
