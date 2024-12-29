@@ -1,13 +1,13 @@
 package com.demo.hotel_booking.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
+@Builder
 @Entity
 @Getter
 @Setter
@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class BookedRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long bookingId;
+    private Long bookingId;
 
     @Column(name = "check_in")
     private LocalDate checkInDate;
@@ -30,37 +30,45 @@ public class BookedRoom {
     @Column(name = "guest_email")
     private String guestEmail;
 
-    @Column(name = "adults")
-    private int NumOfAdults;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
-    @Column(name = "children")
-    private int NumOfChildren;
+    @Column(name = "num_of_adults")
+    private int numOfAdults;
 
-    @Column(name = "total_guest")
-    private int totalNumOfGuest;
+    @Column(name = "num_of_children")
+    private int numOfChildren;
 
-    @Column(name = "confirmation_Code")
+    @Column(name = "confirmation_code")
     private String bookingConfirmationCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private Room room;
 
-    public void calculateTotalNumberOfGuest(){
-        this.totalNumOfGuest = this.NumOfAdults + NumOfChildren;
-    }
+    // Payment-related fields
+    @Column(name = "payment_status")
+    private String paymentStatus; // PENDING, PAID, FAILED
 
-    public void setNumOfAdults(int numOfAdults) {
-        NumOfAdults = numOfAdults;
-        calculateTotalNumberOfGuest();
-    }
+    @Column(name = "transaction_id")
+    private String transactionId; // VNPay transaction ID
 
-    public void setNumOfChildren(int numOfChildren) {
-        NumOfChildren = numOfChildren;
-        calculateTotalNumberOfGuest();
-    }
+    @Column(name = "payment_amount")
+    private int paymentAmount; // Payment amount in VND (unit: dong)
 
-    public void setBookingConfirmationCode(String bookingConfirmationCode) {
-        this.bookingConfirmationCode = bookingConfirmationCode;
+    @Column(name = "payment_date")
+    private LocalDateTime paymentTime; // Date of payment
+
+    @Column(name = "is_paid")
+    private boolean isPaid; // true if the booking is paid, false otherwise
+
+    @Column(name = "is_checked_in")
+    private boolean isCheckedIn; // true if the guest has checked in, false otherwise
+
+    @Column(name = "is_checked_out")
+    private boolean isCheckedOut; // true if the guest has checked out, false otherwise
+
+    public void generateConfirmationCode() {
+        this.bookingConfirmationCode = UUID.randomUUID().toString();
     }
 }
